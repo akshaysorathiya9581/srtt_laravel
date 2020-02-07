@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Traits\CommonTrait;
+use App\Passport;
+use App\MasterClient;
 use Auth;
 
 class PassportController extends Controller
@@ -13,8 +15,8 @@ class PassportController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $columns = array( 
-                0 => 'id', 
+            $columns = array(
+                0 => 'id',
                 1 => 'reference_code',
                 2 => 'name',
                 3 => 'place',
@@ -24,9 +26,9 @@ class PassportController extends Controller
                 7 => 'id',
             );
 
-            $totalData = PaxProfile::count();
+            $totalData = Passport::count();
 
-            $totalFiltered = $totalData; 
+            $totalFiltered = $totalData;
 
             $limit = $request->input('length');
             $start = $request->input('start');
@@ -34,47 +36,45 @@ class PassportController extends Controller
             $order = $columns[$request->input('order.0.column')];
             $dir = $request->input('order.0.dir');
 
-            if(empty($request->input('search.value'))) {            
-                $paxprofiles = PaxProfile::with('clientDetails')->offset($start)
+            if(empty($request->input('search.value'))) {
+                $passports = Passport::with('clientDetails')->offset($start)
                                     ->limit($limit)
-                                    ->orderBy($order,$dir)   
+                                    ->orderBy($order,$dir)
                                     ->get()
                                     ->toArray();
                 // dd($paxprofiles->toArray());
             } else {
-                $search = $request->input('search.value'); 
+                $search = $request->input('search.value');
 
-                $paxprofiles =  Airlinelist::with('clientDetails')->where('id','LIKE',"%{$search}%")
-                                    ->orWhere('name', 'LIKE',"%{$search}%")
+                $passports =  Passport::with('clientDetails')->where('id','LIKE',"%{$search}%")
+                                    ->orWhere('passport_number', 'LIKE',"%{$search}%")
                                     ->offset($start)
                                     ->limit($limit)
                                     ->orderBy($order,$dir)
                                     ->get();
-                                    dd($paxprofiles);
 
-                $totalFiltered = Airlinelist::where('id','LIKE',"%{$search}%")
-                                    ->orWhere('name', 'LIKE',"%{$search}%")
+                $totalFiltered = Passport::where('id','LIKE',"%{$search}%")
+                                    ->orWhere('passport_number', 'LIKE',"%{$search}%")
                                     ->count();
             }
             // dd($airlinelists);
             $data = array();
-            if(!empty($paxprofiles)){
-                foreach ($paxprofiles as $paxprofile) {
+            if(!empty($passports)){
+                foreach ($passports as $passport) {
                     // dd($paxprofile);
-                    $show =  route('paxprofile.show',$paxprofile['id']);
-                    $edit =  route('paxprofile.edit',$paxprofile['id']);
+                    $show =  route('passports.show',$passports['id']);
+                    $edit =  route('passports.edit',$passports['id']);
                     // echo $paxprofile->client_details['f_name']; die();
-                    $nestedData['id'] = $paxprofile['id'];
-                    $nestedData['reference_code'] = $paxprofile['reference_code'];
-                    $nestedData['name'] = $paxprofile['client_details']['f_name'].' '.$paxprofile['client_details']['m_name'].' '.$paxprofile['client_details']['l_name'];
-                    $nestedData['place'] = $paxprofile['client_details']['place'];
-                    $nestedData['dob'] = date('d-m-Y',strtotime($paxprofile['client_details']['dob']));
-                    $nestedData['created_at'] = date('d-m-Y H:i:s',strtotime($paxprofile['created_at']));
-                    $nestedData['updated_at'] = date('d-m-Y H:i:s',strtotime($paxprofile['updated_at']));
+                    $nestedData['id'] = $passports['id'];
+                    $nestedData['name'] = $passports['client_details']['f_name'].' '.$passports['client_details']['m_name'].' '.$passports['client_details']['l_name'];
+                    $nestedData['place'] = $passports['client_details']['place'];
+                    $nestedData['dob'] = date('d-m-Y',strtotime($passports['client_details']['dob']));
+                    $nestedData['created_at'] = date('d-m-Y H:i:s',strtotime($passports['created_at']));
+                    $nestedData['updated_at'] = date('d-m-Y H:i:s',strtotime($passports['updated_at']));
                     $nestedData['action'] = "&emsp;<a href='{$show}' title='SHOW' ><span class='glyphicon glyphicon-list'></span></a>
                                             &emsp;<a href='{$edit}' title='EDIT' ><span class='glyphicon glyphicon-edit'></span></a>
-                                            &emsp;<a href='javascript:void(0);' class='delete-btn' data-id='".$paxprofile['id']."'><span class='glyphicon glyphicon-trash'></span>
-                                            <form action='".route('airlienList.destroy',$paxprofile['id'])."' method='POST'>
+                                            &emsp;<a href='javascript:void(0);' class='delete-btn' data-id='".$passports['id']."'><span class='glyphicon glyphicon-trash'></span>
+                                            <form action='".route('airlienList.destroy',$passports['id'])."' method='POST'>
                                                 <input type='hidden' name='_method' value='DELETE'>
                                                 <input type='hidden' name='_token' value='".csrf_token()."'>
                                             </form></a>";
@@ -83,15 +83,15 @@ class PassportController extends Controller
             }
 
             $json_data = array(
-                "draw"            => intval($request->input('draw')),  
-                "recordsTotal"    => intval($totalData),  
-                "recordsFiltered" => intval($totalFiltered), 
-                "data"            => $data   
+                "draw"            => intval($request->input('draw')),
+                "recordsTotal"    => intval($totalData),
+                "recordsFiltered" => intval($totalFiltered),
+                "data"            => $data
                 );
 
             echo json_encode($json_data); die();
         }
-        
+
         return view('front-side.passport.index');
     }
     /**
@@ -102,8 +102,9 @@ class PassportController extends Controller
     public function create()
     {
         $countrys = $this->getAllCountry();
+        $clients = MasterClient::all()->toArray();
         // dd($countrys);
-        return view('front-side.passport.create',compact(['countrys']));
+        return view('front-side.passport.create',compact(['countrys','clients']));
     }
 
     /**
