@@ -29,6 +29,20 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
+                                <label for="client">Client Name<span class="text-danger">*</span></label>
+                                <select name="client" class="form-control select2">
+                                    <option value="">Select Client Name</option>
+                                     @if (!(empty($clients)))
+                                        @foreach($clients as $client)
+                                              <option value="{{ $client['id'] }}">{{ strtoupper($client['f_name'].' '.$client['m_name'].' '.$client['l_name']) }}</option>
+                                        @endforeach;
+                                    @endif;
+                                </select>
+                                @if ($errors->has('client')) <p style="color:red;">{{ $errors->first('client') }}</p> @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
                                 <label for="passport_number">Passport Number<span class="text-danger">*</span></label>
                                 <input type="text" name="passport_number" placeholder="Enter Passport Number" class="form-control " value="{{ old('passport_number') }}" autocomplete="off">
                                 @if ($errors->has('passport_number')) <p style="color:red;">{{ $errors->first('passport_number') }}</p> @endif
@@ -41,6 +55,8 @@
                                 @if ($errors->has('issue_date')) <p style="color:red;">{{ $errors->first('issue_date') }}</p> @endif
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="issue_place">Passport Issue Place<span class="text-danger">*</span></label>
@@ -48,8 +64,6 @@
                                 @if ($errors->has('issue_place')) <p style="color:red;">{{ $errors->first('issue_place') }}</p> @endif
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="expiry_date">Passport Expiry Date<span class="text-danger">*</span></label>
@@ -64,24 +78,24 @@
                                 @if ($errors->has('dob')) <p style="color:red;">{{ $errors->first('dob') }}</p> @endif
                             </div>
                         </div>
-                        <div class="col-md-4">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="ecr">ECR/ECNR:<span class="text-danger">*</span></label>
                                 <select name="ecr" class="form-control select2">
-                                    <option value="">SELECT ECR/ECNR</option>
+                                    <option value="">Select Ecr/Ecnr</option>
                                     <option value="EMIGRATION CHECK REQUIRED">EMIGRATION CHECK REQUIRED</option>
                                     <option value="EMIGRATION CHECK NOT REQUIRED">EMIGRATION CHECK NOT REQUIRED</option>
                                 </select>
                                 @if ($errors->has('ecr')) <p style="color:red;">{{ $errors->first('ecr') }}</p> @endif
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="nationality">Nationality<span class="text-danger">*</span></label>
                                 <select name="nationality" class="form-control select2">
-                                    <option value="">Select Country Code</option>
+                                    <option value="">Select Country</option>
                                      @if (!(empty($countrys)))
                                         @foreach($countrys as $country)
                                               <option value="{{ $country->id }}">{{ strtoupper($country->name) }}</option>
