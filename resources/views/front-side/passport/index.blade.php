@@ -46,10 +46,15 @@
                 <thead>
                     <tr>
                         <th>NO</th>
-                        <th>REFERENCE CODE</th>
                         <th>NAME</th>
-                        <th>PLACE</th>
+                        <th>PASSPORT NUMBER</th>
+                        <th>ISSUE DATE</th>
+                        <th>ISSUE PLACE</th>
+                        <th>EXPIRY DATE</th>
                         <th>DOB</th>
+                        <th>ECR/ECNR</th>
+                        <th>NATIONALITY</th>
+                        <th>STATUS</th>
                         <th>CREATED DATE</th>
                         <th>UPDATED DATE</th>
                         <th>ACTION</th>
@@ -57,7 +62,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                      
+
                     </tr>
                 </tbody>
             </table>
@@ -85,7 +90,7 @@
                 { "data": "created_at" },
                 { "data": "updated_at" },
                 { "data": "action" }
-            ]	 
+            ]
         });
 
         $(document).on('click','.delete-btn',function(){
