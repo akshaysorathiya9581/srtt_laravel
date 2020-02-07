@@ -30,136 +30,79 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="f_name">FIRST NAME<span class="text-danger">*</span></label>
-                                <input type="text" name="f_name" placeholder="Enter First Name" class="form-control " value="{{ $data['client_details']['f_name'] }}" autocomplete="off">
-                                @if ($errors->has('f_name')) <p style="color:red;">{{ $errors->first('f_name') }}</p> @endif
-                            </div>
-                        </div> 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="m_name">MIDDLE NAME</label>
-                                <input type="text" name="m_name" placeholder="Enter Middle Name" class="form-control " value="{{ $data['client_details']['m_name'] }}" autocomplete="off">
-                                @if ($errors->has('m_name')) <p style="color:red;">{{ $errors->first('m_name') }}</p> @endif
+                                <label for="passport_number">Passport Number<span class="text-danger">*</span></label>
+                                <input type="text" name="passport_number" placeholder="Enter Passport Number" class="form-control " value="{{ old('passport_number') }}" autocomplete="off">
+                                @if ($errors->has('passport_number')) <p style="color:red;">{{ $errors->first('passport_number') }}</p> @endif
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="l_name">LAST NAME<span class="text-danger">*</span></label>
-                                <input type="text" name="l_name" placeholder="Enter Last Name" class="form-control " value="{{ $data['client_details']['l_name'] }}" autocomplete="off">
-                                @if ($errors->has('l_name')) <p style="color:red;">{{ $errors->first('l_name') }}</p> @endif
+                                <label for="issue_date">Passport Issue Date</label>
+                                <input type="text" name="issue_date" placeholder="Enter Passport Issue Date" class="form-control " value="{{ old('issue_date') }}" autocomplete="off">
+                                @if ($errors->has('issue_date')) <p style="color:red;">{{ $errors->first('issue_date') }}</p> @endif
                             </div>
                         </div>
-                    </div> 
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="issue_place">Passport Issue Place<span class="text-danger">*</span></label>
+                                <input type="text" name="issue_place" placeholder="Enter Passport Issue Place" class="form-control " value="{{ old('issue_place') }}" autocomplete="off">
+                                @if ($errors->has('issue_place')) <p style="color:red;">{{ $errors->first('issue_place') }}</p> @endif
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label for="dob">DOB<span class="text-danger">*</span></label>
-                                <input type="text" name="dob" placeholder="Enter Dob" class="form-control date" value="{{ date('d-m-Y',strtotime($data['client_details']['l_name'])) }}" autocomplete="off">
+                                <label for="expiry_date">Passport Expiry Date<span class="text-danger">*</span></label>
+                                <input type="text" name="expiry_date" placeholder="Enter Passport Expiry Date" class="form-control " value="{{ old('expiry_date') }}" autocomplete="off">
+                                @if ($errors->has('expiry_date')) <p style="color:red;">{{ $errors->first('expiry_date') }}</p> @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="dob">DATE OF BIRTH:<span class="text-danger">*</span></label>
+                                <input type="text" name="dob" placeholder="Enter Dob" class="form-control date" value="{{ old('dob') }}" autocomplete="off">
                                 @if ($errors->has('dob')) <p style="color:red;">{{ $errors->first('dob') }}</p> @endif
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="place">PLACE<span class="text-danger">*</span></label>
-                                <input type="text" name="place" placeholder="Enter Place" class="form-control " value="{{ $data['client_details']['place'] }}" autocomplete="off">
-                                @if ($errors->has('place')) <p style="color:red;">{{ $errors->first('place') }}</p> @endif
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="gender">GENDER<span class="text-danger">*</span></label><br>
-                                <div class="radio radio-info radio-inline">
-                                    <input type="radio" id="male" value="male" name="gender" {{ $data['client_details']['gender'] == 'male' ? 'checked' : '' }}>
-                                    <label for="male"> MALE </label>
-                                </div>
-                                <div class="radio radio-info radio-inline">
-                                    <input type="radio" id="female" value="female" name="gender" {{ $data['client_details']['gender'] == 'female' ? 'checked' : '' }}>
-                                    <label for="female"> FEMALE </label>
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="email">EMAIL<span class="text-danger">*</span></label>
-                                <input type="text" name="email" placeholder="Enter Email" class="form-control " value="{{ $data['email'] }}" autocomplete="off">
-                                @if ($errors->has('email')) <p style="color:red;">{{ $errors->first('email') }}</p> @endif
-                            </div>
-                        </div>
-                    </div> 
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="con_coun_code">Country Code<span class="text-danger">*</span></label>
-                                <select name="phone_coun_code" class="form-control  select2">
-                                    <option value="">Select Country Code</option>
-                                    @if (!(empty($countrys)))
-                                        @foreach($countrys as $country)
-                                              <option value="{{ $country->phonecode }}">{{ strtoupper($country->name.'  +'.$country->phonecode) }}</option>
-                                        @endforeach;
-                                    @endif;
+                                <label for="ecr">ECR/ECNR:<span class="text-danger">*</span></label>
+                                <select name="ecr" class="form-control">
+                                    <option value="">SELECT ECR/ECNR</option>
+                                    <option value="EMIGRATION CHECK REQUIRED">EMIGRATION CHECK REQUIRED</option>
+                                    <option value="EMIGRATION CHECK NOT REQUIRED">EMIGRATION CHECK NOT REQUIRED</option>
                                 </select>
-                                @if ($errors->has('phone_coun_code')) <p style="color:red;">{{ $errors->first('phone_coun_code') }}</p> @endif
-                            </div>
-                        </div> 
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="name">Phone number<span class="text-danger">*</span></label>
-                                <input type="text" name="phone_number" placeholder="Enter Phone Number" class="form-control  " value="{{ old('phone_number') }}" autocomplete="off">
-                                @if ($errors->has('phone_number')) <p style="color:red;">{{ $errors->first('phone_number') }}</p> @endif
+                                @if ($errors->has('ecr')) <p style="color:red;">{{ $errors->first('ecr') }}</p> @endif
                             </div>
                         </div>
-                        <div class="col-md-3">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label for="con_coun_code">Country Code<span class="text-danger">*</span></label>
-                                <select name="whatsapp_coun_code" class="form-control select2">
+                                <label for="nationality">NATIONALITY<span class="text-danger">*</span></label>
+                                <select name="nationality" class="form-control select2">
                                     <option value="">Select Country Code</option>
                                      @if (!(empty($countrys)))
                                         @foreach($countrys as $country)
-                                              <option value="{{ $country->phonecode }}">{{ strtoupper($country->name.'  +'.$country->phonecode) }}</option>
+                                              <option value="{{ $country->id }}">{{ strtoupper($country->name) }}</option>
                                         @endforeach;
                                     @endif;
                                 </select>
-                                @if ($errors->has('whatsapp_coun_code')) <p style="color:red;">{{ $errors->first('whatsapp_coun_code') }}</p> @endif
-                            </div>
-                        </div> 
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="name">Whatsapp Number<span class="text-danger">*</span></label>
-                                <input type="text" name="whatsapp_number" placeholder="Enter Whatsapp Number" class="form-control " value="{{ old('whatsapp_number') }}" autocomplete="off">
-                                @if ($errors->has('whatsapp_number')) <p style="color:red;">{{ $errors->first('whatsapp_number') }}</p> @endif
+                                @if ($errors->has('nationality')) <p style="color:red;">{{ $errors->first('nationality') }}</p> @endif
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="meal_pre">MEAL PREFERENCE:<span class="text-danger">*</span></label>
-                                <select name="meal_pre" class="form-control select2">
-                                    <option value="">Select Service</option>
-                                     @if (!(empty($mealPreferences)))
-                                        @foreach($mealPreferences as $mealPreference)
-                                              <option value="{{ $mealPreference['short_name'] }}">{{ $mealPreference['name'] }}</option>
-                                        @endforeach;
-                                    @endif;
-                                </select>
-                                @if ($errors->has('meal_pre')) <p style="color:red;">{{ $errors->first('meal_pre') }}</p> @endif
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>File Uploads</label><span class="text-danger">*</span>
+                                    <input type="file" name="files[]" id="filer_input1" multiple="multiple">
+                                </div>
+                                @if ($errors->has('files')) <p style="color:red;">{{ $errors->first('files') }}</p> @endif
                             </div>
-                        </div>  
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="seat_pre">SEAT PREFERENCE:<span class="text-danger">*</span></label>
-                                <select name="seat_pre" class="form-control select2">
-                                    <option value="">Select Seat Preference:</option>
-                                    @if (!(empty($seatPreferences)))
-                                        @foreach($seatPreferences as $seatPreference)
-                                              <option value="{{ $seatPreference['id'] }}">{{ $seatPreference['name'] }}</option>
-                                        @endforeach;
-                                    @endif;
-                                </select>
-                                @if ($errors->has('seat_pre')) <p style="color:red;">{{ $errors->first('seat_pre') }}</p> @endif
-                            </div>
-                        </div> 
-                    </div> 
+                        </div>
+                    </div>
                     <div class="form-group text-right m-b-0">
                         <button class="btn btn-primary waves-effect waves-light" type="submit">SAVE</button>
                         <button type="reset" class="btn btn-danger waves-effect m-l-5">Cancel</button>
