@@ -15,7 +15,7 @@ class CreateMasterClientSuggestionsTable extends Migration
     {
         Schema::create('master_client_suggestions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('client_id');
+            $table->integer('client_id')->comment('client_id.master_clients');
             $table->string('cont_coun_code');
             $table->string('phone_number');
             $table->string('whas_coun_code');
