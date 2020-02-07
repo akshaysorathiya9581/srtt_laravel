@@ -59,15 +59,15 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="dob">DATE OF BIRTH:<span class="text-danger">*</span></label>
-                                <input type="text" name="dob" placeholder="Enter Dob" class="form-control date" value="{{ old('dob') }}" autocomplete="off">
+                                <label for="dob">Date Of Birth:<span class="text-danger">*</span></label>
+                                <input type="text" name="dob" placeholder="Enter Dob" class="form-control birth" value="{{ old('dob') }}" autocomplete="off">
                                 @if ($errors->has('dob')) <p style="color:red;">{{ $errors->first('dob') }}</p> @endif
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="ecr">ECR/ECNR:<span class="text-danger">*</span></label>
-                                <select name="ecr" class="form-control">
+                                <select name="ecr" class="form-control select2">
                                     <option value="">SELECT ECR/ECNR</option>
                                     <option value="EMIGRATION CHECK REQUIRED">EMIGRATION CHECK REQUIRED</option>
                                     <option value="EMIGRATION CHECK NOT REQUIRED">EMIGRATION CHECK NOT REQUIRED</option>
@@ -79,7 +79,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="nationality">NATIONALITY<span class="text-danger">*</span></label>
+                                <label for="nationality">Nationality<span class="text-danger">*</span></label>
                                 <select name="nationality" class="form-control select2">
                                     <option value="">Select Country Code</option>
                                      @if (!(empty($countrys)))
@@ -111,6 +111,7 @@
         </div><!-- end col-->
     </div>
 @endsection
+
 @push('scripts')
     <script>
         jQuery(document).ready(function () {
