@@ -1,7 +1,6 @@
 @extends('front-side.layout.mainlayout')
 @section('content')
 <!-- end row -->
-
    <div class="row">
         <div class="col-sm-12">
             <div class="page-title-box">
@@ -34,7 +33,7 @@
                                 <input type="text" name="passport_number" placeholder="Enter Passport Number" class="form-control " value="{{ old('passport_number') }}" autocomplete="off">
                                 @if ($errors->has('passport_number')) <p style="color:red;">{{ $errors->first('passport_number') }}</p> @endif
                             </div>
-                        </div> 
+                        </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="issue_date">Passport Issue Date</label>
@@ -49,7 +48,7 @@
                                 @if ($errors->has('issue_place')) <p style="color:red;">{{ $errors->first('issue_place') }}</p> @endif
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
@@ -76,7 +75,7 @@
                                 @if ($errors->has('ecr')) <p style="color:red;">{{ $errors->first('ecr') }}</p> @endif
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -91,8 +90,8 @@
                                 </select>
                                 @if ($errors->has('nationality')) <p style="color:red;">{{ $errors->first('nationality') }}</p> @endif
                             </div>
-                        </div> 
-                    </div>  
+                        </div>
+                    </div>
                     <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -101,8 +100,8 @@
                                 </div>
                                 @if ($errors->has('files')) <p style="color:red;">{{ $errors->first('files') }}</p> @endif
                             </div>
-                        </div> 
-                    </div> 
+                        </div>
+                    </div>
                     <div class="form-group text-right m-b-0">
                         <button class="btn btn-primary waves-effect waves-light" type="submit">SAVE</button>
                         <button type="reset" class="btn btn-danger waves-effect m-l-5">Cancel</button>
