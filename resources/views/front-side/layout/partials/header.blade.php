@@ -176,17 +176,17 @@
                 <ul class="navigation-menu">
 
                     <li class="has-submenu">
-                        <a href="#"><i class="mdi mdi-view-dashboard"></i>Dashboard</a>
-                    </li>  
+                        <a href="{{ route('dashboard.index') }}"><i class="mdi mdi-view-dashboard"></i>Dashboard</a>
+                    </li>
                     <li class="has-submenu">
                         <a href="{{ route('crm.index') }}"><i class="mdi mdi-new-box"></i>CRM</a>
-                    </li> 
+                    </li>
                     <li class="has-submenu">
                         <a href="#"><i class="mdi mdi-airplane-takeoff"></i>FLIGHT</a>
                     </li>
                     <li class="has-submenu">
                         <a href="#"><i class="mdi mdi-hotel"></i>HOTEL</a>
-                    </li> 
+                    </li>
                     <!-- <li class="has-submenu"><a href="{{ route('paxprofile.index') }}"><i class="mdi mdi-account-multiple"></i>PAX PROFILE</a></li> -->
                     <li class="has-submenu">
                         <a href="{{ route('paxprofile.index') }}"><i class="mdi mdi-layers"></i>PAX PROFILE</a>
@@ -231,7 +231,7 @@
                                     <li><a href="form-uploads.html">Multiple File Upload</a></li>
                                 </ul>
                             </li>
-                           
+
                         </ul>
                     </li> -->
                 </ul>

@@ -22,6 +22,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('crm','CrmController');
     Route::resource('paxprofile','PaxProfileController');
     Route::resource('passport','PassportController');
+    Route::resource('dashboard','DashboardController');
 });
 
 // Route::get('admin/dashboard', 'AdminController@index')->name('admin.home')->middleware('is_admin');

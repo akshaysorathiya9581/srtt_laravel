@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="{{asset('public/plugins/datatables/fixedHeader.bootstrap.min.css')}}">
 
 <script src="{{asset('public/front-side/js/jquery.min.js')}}"></script>
-
+@stack('style')
 <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
