@@ -20,8 +20,8 @@ class PaxProfileController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $columns = array( 
-                0 => 'id', 
+            $columns = array(
+                0 => 'id',
                 1 => 'reference_code',
                 2 => 'name',
                 3 => 'place',
@@ -33,7 +33,7 @@ class PaxProfileController extends Controller
 
             $totalData = PaxProfile::count();
 
-            $totalFiltered = $totalData; 
+            $totalFiltered = $totalData;
 
             $limit = $request->input('length');
             $start = $request->input('start');
@@ -41,15 +41,15 @@ class PaxProfileController extends Controller
             $order = $columns[$request->input('order.0.column')];
             $dir = $request->input('order.0.dir');
 
-            if(empty($request->input('search.value'))) {            
+            if(empty($request->input('search.value'))) {
                 $paxprofiles = PaxProfile::with('clientDetails')->offset($start)
                                     ->limit($limit)
-                                    ->orderBy($order,$dir)   
+                                    ->orderBy($order,$dir)
                                     ->get()
                                     ->toArray();
                 // dd($paxprofiles->toArray());
             } else {
-                $search = $request->input('search.value'); 
+                $search = $request->input('search.value');
 
                 $paxprofiles =  Airlinelist::with('clientDetails')->where('id','LIKE',"%{$search}%")
                                     ->orWhere('name', 'LIKE',"%{$search}%")
@@ -90,15 +90,15 @@ class PaxProfileController extends Controller
             }
 
             $json_data = array(
-                "draw"            => intval($request->input('draw')),  
-                "recordsTotal"    => intval($totalData),  
-                "recordsFiltered" => intval($totalFiltered), 
-                "data"            => $data   
+                "draw"            => intval($request->input('draw')),
+                "recordsTotal"    => intval($totalData),
+                "recordsFiltered" => intval($totalFiltered),
+                "data"            => $data
                 );
 
             echo json_encode($json_data); die();
         }
-        
+
         return view('front-side.paxprofile.index');
     }
 
@@ -130,7 +130,7 @@ class PaxProfileController extends Controller
         ];
 
         $validationMsg = [
-            'f_name.required' => 'First Name is required', 
+            'f_name.required' => 'First Name is required',
             'l_name.required' => 'Last Name is required',
             'dob.required' => 'Date of Birth is required',
             'place.required' => 'Place is required',
@@ -143,7 +143,7 @@ class PaxProfileController extends Controller
 
         $validation = Validator::make(
             [
-                'f_name' => $f_name, 
+                'f_name' => $f_name,
                 'l_name' => $l_name,
                 'dob' => $dob,
                 'place' => $request->place,
@@ -160,7 +160,7 @@ class PaxProfileController extends Controller
                 $validation->errors()->add('f_name', 'User already exists, please enter another user.');
             }
         });
-       
+
         if ($validation->fails()) {
             foreach ($validation->errors()->all() as $error) {
                 $message = $error;
@@ -170,7 +170,7 @@ class PaxProfileController extends Controller
            $masterClient  = MasterClient::updateOrCreate(
                 ['f_name' => $f_name, 'l_name' => $l_name,'dob' => date('Y-m-d',strtotime($dob))],
                 ['f_name' => $f_name, 'l_name' => $l_name, 'm_name' => $request->m_name,'dob' => date('Y-m-d',strtotime($dob)),'place'=> $request->place,'gender' => $request->gender]
-            ); 
+            );
 
            $masterClientSuggestion = MasterClientSuggestion::updateOrCreate(
                 ['client_id' => $masterClient->id, 'cont_coun_code' => $request->phone_coun_code,'phone_number' => $request->phone_number,'whas_coun_code' => $request->whatsapp_coun_code,'wtsapp_no' => $request->whatsapp_number,'email' => $request->email],
@@ -181,7 +181,7 @@ class PaxProfileController extends Controller
             $this->generateReferenceCode('pax_profiles',$paxprofile->id);
             return Redirect::route('paxprofile.index')->with('message', 'paxprofile ADD SUCCESSFULLY');
         }
-        
+
     }
 
     public function show($id)
@@ -191,7 +191,7 @@ class PaxProfileController extends Controller
 
     public function edit($id)
     {
-        $data = PaxProfile::with(['clientDetails','author.publishers'])->find($id)->toArray();
+        $data = PaxProfile::with(['clientDetails','userDetailes'])->find($id)->toArray();
         // dd($data);
         $mealPreferences = MealPreference::all()->toArray();
         $seatPreferences = SeatPreference::all()->toArray();
@@ -220,7 +220,7 @@ class PaxProfileController extends Controller
         ];
 
         $validationMsg = [
-            'f_name.required' => 'First Name is required', 
+            'f_name.required' => 'First Name is required',
             'l_name.required' => 'Last Name is required',
             'dob.required' => 'Date of Birth is required',
             'place.required' => 'Place is required',
@@ -233,7 +233,7 @@ class PaxProfileController extends Controller
 
         $validation = Validator::make(
             [
-                'f_name' => $f_name, 
+                'f_name' => $f_name,
                 'l_name' => $l_name,
                 'dob' => $dob,
                 'place' => $request->place,
@@ -250,7 +250,7 @@ class PaxProfileController extends Controller
                 $validation->errors()->add('f_name', 'User already exists, please enter another user.');
             }
         });
-       
+
         if ($validation->fails()) {
             foreach ($validation->errors()->all() as $error) {
                 $message = $error;
@@ -260,7 +260,7 @@ class PaxProfileController extends Controller
            $masterClient  = MasterClient::updateOrCreate(
                 ['f_name' => $f_name, 'l_name' => $l_name,'dob' => date('Y-m-d',strtotime($dob))],
                 ['f_name' => $f_name, 'l_name' => $l_name, 'm_name' => $request->m_name,'dob' => date('Y-m-d',strtotime($dob)),'place'=> $request->place,'gender' => $request->gender]
-            ); 
+            );
 
            $masterClientSuggestion = MasterClientSuggestion::updateOrCreate(
                 ['client_id' => $masterClient->id, 'cont_coun_code' => $request->phone_coun_code,'phone_number' => $request->phone_number,'whas_coun_code' => $request->whatsapp_coun_code,'wtsapp_no' => $request->whatsapp_number,'email' => $request->email],
@@ -273,7 +273,7 @@ class PaxProfileController extends Controller
             $paxprofile->updated_by = Auth::user()->id;
 
             $paxprofile->update($paxprofile);
-            
+
             return Redirect::route('paxprofile.index')->with('message', 'PAXPROFILE ADD SUCCESSFULLY');
         }
     }

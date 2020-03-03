@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Traits\CommonTrait;
 use App\Passport;
 use App\MasterClient;
+use App\Http\Requests\PassportRequest;
 use Auth;
 
 class PassportController extends Controller
@@ -94,11 +95,7 @@ class PassportController extends Controller
 
         return view('front-side.passport.index');
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         $countrys = $this->getAllCountry();
@@ -113,9 +110,35 @@ class PassportController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PassportRequest $request)
     {
-        //
+        $files = $request->file('files');
+        dd($files);
+        $passport = new passport();
+        $passport->name = $request->client;
+        $passport->passport_number = $request->passport_number;
+        $passport->issue_date = date('Y-m-d',strtotime($request->issue_date));
+        $passport->issue_place = $request->airline_gst;
+        $passport->expiry_date = $request->email;
+        $passport->ecr = $request->phone_number;
+        $passport->country_id = $request->contact_person;
+        $passport->attached = $files->getFilename().'.'.$files->extension();
+        $passport->created_by = Auth::user()->id;
+        $passport->save();
+
+        if ($request->hasFile('files')) {
+            $folder = public_path('passport/' .$passport->id);
+            if (!Storage::exists($folder)) {
+                Storage::makeDirectory($folder, 777, true, true);
+            }
+            foreach ($files as $file) {
+                $imageName = $file->getFilename().'.'.$file->extension();
+                $file->move($folder,$imageName);
+            }
+            // $imageName = $logo->getFilename().'.'.$logo->extension();
+            // $request->logo->move($folder, $imageName);
+        }
+        return Redirect::route('passport.index')->with('message', 'PASSPORT ADD SUCCESSFULLY');
     }
 
     /**

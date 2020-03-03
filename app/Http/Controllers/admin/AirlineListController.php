@@ -24,13 +24,13 @@ class AirlineListController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $columns = array( 
-                0 =>'id', 
+            $columns = array(
+                0 =>'id',
                 1 =>'image',
                 2 =>'name',
                 3 =>'membership_plan',
                 4 =>'airline_group',
-                5 =>'airline_gst',               
+                5 =>'airline_gst',
                 6 => 'created_at',
                 7 => 'updated_at',
                 8 => 'id',
@@ -38,7 +38,7 @@ class AirlineListController extends Controller
 
             $totalData = Airlinelist::count();
 
-            $totalFiltered = $totalData; 
+            $totalFiltered = $totalData;
 
             $limit = $request->input('length');
             $start = $request->input('start');
@@ -46,14 +46,14 @@ class AirlineListController extends Controller
             $order = $columns[$request->input('order.0.column')];
             $dir = $request->input('order.0.dir');
 
-            if(empty($request->input('search.value'))) {            
+            if(empty($request->input('search.value'))) {
                 $airlinelists = Airlinelist::with('airlineGroup')->offset($start)
                         ->limit($limit)
-                        ->orderBy($order,$dir)   
+                        ->orderBy($order,$dir)
                         ->get();
                 // dd($airlinelists);
             } else {
-                $search = $request->input('search.value'); 
+                $search = $request->input('search.value');
 
                 $airlinelists =  Airlinelist::where('id','LIKE',"%{$search}%")
                             ->orWhere('name', 'LIKE',"%{$search}%")
@@ -93,15 +93,15 @@ class AirlineListController extends Controller
             }
 
             $json_data = array(
-                "draw"            => intval($request->input('draw')),  
-                "recordsTotal"    => intval($totalData),  
-                "recordsFiltered" => intval($totalFiltered), 
-                "data"            => $data   
+                "draw"            => intval($request->input('draw')),
+                "recordsTotal"    => intval($totalData),
+                "recordsFiltered" => intval($totalFiltered),
+                "data"            => $data
                 );
 
             echo json_encode($json_data); die();
         }
-        
+
         // dd($AirlineGroups);
        return view('admin-side.airline-list.index');
     }
@@ -127,7 +127,7 @@ class AirlineListController extends Controller
     {
         // dd($request->all());
         $logo = $request->file('logo');
-        
+
         $airlinelist = new Airlinelist();
         $airlinelist->name = $request->name;
         $airlinelist->membership_plan = $request->membership_plan;
@@ -146,7 +146,7 @@ class AirlineListController extends Controller
             if (!Storage::exists($folder)) {
                 Storage::makeDirectory($folder, 777, true, true);
             }
-            $imageName = $logo->getFilename().'.'.$logo->extension();  
+            $imageName = $logo->getFilename().'.'.$logo->extension();
             $request->logo->move($folder, $imageName);
         }
         return Redirect::route('airlienList.index')->with('message', 'AIRLINE ADD SUCCESSFULLY');
@@ -187,7 +187,7 @@ class AirlineListController extends Controller
     {
         // dd($request->all());
         $logo = $request->file('logo');
-        
+
         $airlinelist = Airlinelist::find($id);
         $airlinelist->name = $request->name;
         $airlinelist->membership_plan = $request->membership_plan;
@@ -221,7 +221,7 @@ class AirlineListController extends Controller
             if (!Storage::exists($folder)) {
                 Storage::makeDirectory($folder, 777, true, true);
             }
-            $imageName = $logo->getFilename().'.'.$logo->extension();  
+            $imageName = $logo->getFilename().'.'.$logo->extension();
             $request->logo->move($folder, $imageName);
         }
         return Redirect::route('airlienList.index')->with('message', 'AIRLINE UPDATE SUCCESSFULLY');
@@ -238,7 +238,7 @@ class AirlineListController extends Controller
         $airlinelist = Airlinelist::find($id);
         $airlinelist->deleted_by = Auth::user()->id;
         $airlinelist->save();
-        
+
         $airlinelist->delete();
         return Redirect::route('airlienList.index')->with('message', 'AIRLINE DELETE SUCCESSFULLY');
     }

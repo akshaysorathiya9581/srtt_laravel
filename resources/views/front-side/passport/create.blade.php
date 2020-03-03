@@ -34,7 +34,7 @@
                                     <option value="">Select Client Name</option>
                                      @if (!(empty($clients)))
                                         @foreach($clients as $client)
-                                              <option value="{{ $client['id'] }}">{{ strtoupper($client['f_name'].' '.$client['m_name'].' '.$client['l_name']) }}</option>
+                                              <option value="{{ $client['id'] }}"  @if(old('client') == $client['id']) selected @endif>{{ strtoupper($client['f_name'].' '.$client['m_name'].' '.$client['l_name']) }}</option>
                                         @endforeach;
                                     @endif;
                                 </select>
@@ -85,8 +85,8 @@
                                 <label for="ecr">ECR/ECNR:<span class="text-danger">*</span></label>
                                 <select name="ecr" class="form-control select2">
                                     <option value="">Select Ecr/Ecnr</option>
-                                    <option value="EMIGRATION CHECK REQUIRED">EMIGRATION CHECK REQUIRED</option>
-                                    <option value="EMIGRATION CHECK NOT REQUIRED">EMIGRATION CHECK NOT REQUIRED</option>
+                                    <option value="EMIGRATION CHECK REQUIRED" @if(old('ecr') == 'EMIGRATION CHECK REQUIRED') selected @endif>EMIGRATION CHECK REQUIRED</option>
+                                    <option value="EMIGRATION CHECK NOT REQUIRED" @if(old('ecr') == 'EMIGRATION CHECK NOT REQUIRED') selected @endif>EMIGRATION CHECK NOT REQUIRED</option>
                                 </select>
                                 @if ($errors->has('ecr')) <p style="color:red;">{{ $errors->first('ecr') }}</p> @endif
                             </div>
@@ -98,7 +98,7 @@
                                     <option value="">Select Country</option>
                                      @if (!(empty($countrys)))
                                         @foreach($countrys as $country)
-                                              <option value="{{ $country->id }}">{{ strtoupper($country->name) }}</option>
+                                              <option value="{{ $country->id }}" @if(old('nationality') ==  $country->id) selected @endif>{{ strtoupper($country->name) }}</option>
                                         @endforeach;
                                     @endif;
                                 </select>

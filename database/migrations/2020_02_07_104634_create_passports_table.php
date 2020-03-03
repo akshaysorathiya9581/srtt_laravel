@@ -23,7 +23,7 @@ class CreatePassportsTable extends Migration
             $table->string('ecr');
             $table->integer('country_id')->comment('country_id.ak_countries');
             $table->text('attached');
-            $table->enum('1', ['0', '1'])->comment('0=old passport,1= new passport');
+            $table->enum('status', ['0', '1'])->comment('0=old passport,1= new passport');
             $table->timestamps();
             $table->softDeletes();
         });

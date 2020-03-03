@@ -7,7 +7,7 @@
 		@include('front-side.layout.partials.nav')
 		@include('front-side.layout.partials.header')
 		<div class="wrapper">
-            <div class="container">
+            <div class="container-fluid">
 				@yield('content')
 				@include('front-side.layout.partials.footer')
 		  	</div> <!-- end container -->
