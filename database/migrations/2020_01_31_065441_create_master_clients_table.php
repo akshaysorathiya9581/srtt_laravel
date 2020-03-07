@@ -19,8 +19,8 @@ class CreateMasterClientsTable extends Migration
             $table->string('m_name')->nullable();
             $table->string('l_name');
             $table->string('place');
-            $table->date('dob')->nullable();;
-            $table->string('gender')->nullable();;
+            $table->date('dob')->nullable();
+            $table->string('gender')->nullable();
             $table->timestamps();
         });
     }

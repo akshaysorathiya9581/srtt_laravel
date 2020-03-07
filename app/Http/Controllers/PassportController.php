@@ -9,6 +9,7 @@ use App\Passport;
 use App\MasterClient;
 use App\Http\Requests\PassportRequest;
 use Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PassportController extends Controller
 {
@@ -52,30 +53,35 @@ class PassportController extends Controller
                                     ->offset($start)
                                     ->limit($limit)
                                     ->orderBy($order,$dir)
-                                    ->get();
+                                    ->get()
+                                    ->toArray();
 
                 $totalFiltered = Passport::where('id','LIKE',"%{$search}%")
                                     ->orWhere('passport_number', 'LIKE',"%{$search}%")
                                     ->count();
             }
-            // dd($airlinelists);
+            // dd($passports);
             $data = array();
             if(!empty($passports)){
                 foreach ($passports as $passport) {
                     // dd($paxprofile);
-                    $show =  route('passports.show',$passports['id']);
-                    $edit =  route('passports.edit',$passports['id']);
+                    $show =  route('passport.show',$passport['id']);
+                    $edit =  route('passport.edit',$passport['id']);
                     // echo $paxprofile->client_details['f_name']; die();
-                    $nestedData['id'] = $passports['id'];
-                    $nestedData['name'] = $passports['client_details']['f_name'].' '.$passports['client_details']['m_name'].' '.$passports['client_details']['l_name'];
-                    $nestedData['place'] = $passports['client_details']['place'];
-                    $nestedData['dob'] = date('d-m-Y',strtotime($passports['client_details']['dob']));
-                    $nestedData['created_at'] = date('d-m-Y H:i:s',strtotime($passports['created_at']));
-                    $nestedData['updated_at'] = date('d-m-Y H:i:s',strtotime($passports['updated_at']));
+                    $nestedData['id'] = $passport['id'];
+                    $nestedData['name'] = $passport['client_details']['f_name'].' '.$passport['client_details']['m_name'].' '.$passport['client_details']['l_name'];
+                    $nestedData['passport_number'] = $passport['passport_number'];
+                    $nestedData['issue_date'] = date('d-m-Y',strtotime($passport['issue_date']));
+                    $nestedData['issue_place'] = $passport['issue_place'];
+                    $nestedData['expiry_date'] = date('d-m-Y',strtotime($passport['expiry_date']));
+                    $nestedData['dob'] = date('d-m-Y',strtotime($passport['dob']));
+                    $nestedData['ecr'] = $passport['ecr'];
+                    $nestedData['created_at'] = date('d-m-Y H:i:s',strtotime($passport['created_at']));
+                    $nestedData['updated_at'] = date('d-m-Y H:i:s',strtotime($passport['updated_at']));
                     $nestedData['action'] = "&emsp;<a href='{$show}' title='SHOW' ><span class='glyphicon glyphicon-list'></span></a>
                                             &emsp;<a href='{$edit}' title='EDIT' ><span class='glyphicon glyphicon-edit'></span></a>
-                                            &emsp;<a href='javascript:void(0);' class='delete-btn' data-id='".$passports['id']."'><span class='glyphicon glyphicon-trash'></span>
-                                            <form action='".route('airlienList.destroy',$passports['id'])."' method='POST'>
+                                            &emsp;<a href='javascript:void(0);' class='delete-btn' data-id='".$passport['id']."'><span class='glyphicon glyphicon-trash'></span>
+                                            <form action='".route('airlienList.destroy',$passport['id'])."' method='POST'>
                                                 <input type='hidden' name='_method' value='DELETE'>
                                                 <input type='hidden' name='_token' value='".csrf_token()."'>
                                             </form></a>";
@@ -113,31 +119,34 @@ class PassportController extends Controller
     public function store(PassportRequest $request)
     {
         $files = $request->file('files');
-        dd($files);
+
         $passport = new passport();
-        $passport->name = $request->client;
+        $passport->client_id = $request->client;
         $passport->passport_number = $request->passport_number;
         $passport->issue_date = date('Y-m-d',strtotime($request->issue_date));
-        $passport->issue_place = $request->airline_gst;
-        $passport->expiry_date = $request->email;
-        $passport->ecr = $request->phone_number;
-        $passport->country_id = $request->contact_person;
-        $passport->attached = $files->getFilename().'.'.$files->extension();
+        $passport->issue_place = $request->issue_place;
+        $passport->expiry_date =date('Y-m-d',strtotime($request->expiry_date));
+        $passport->dob =date('Y-m-d',strtotime($request->dob));
+        $passport->ecr = $request->ecr;
+        $passport->country_id = $request->nationality;
         $passport->created_by = Auth::user()->id;
-        $passport->save();
 
         if ($request->hasFile('files')) {
             $folder = public_path('passport/' .$passport->id);
             if (!Storage::exists($folder)) {
                 Storage::makeDirectory($folder, 777, true, true);
             }
-            foreach ($files as $file) {
+            $imageData = array();
+            foreach ($files as $k => $file) {
                 $imageName = $file->getFilename().'.'.$file->extension();
                 $file->move($folder,$imageName);
+                $imageData[] = $imageName;
             }
+            $passport->attached = implode(',',$imageData);
             // $imageName = $logo->getFilename().'.'.$logo->extension();
             // $request->logo->move($folder, $imageName);
         }
+        $passport->save();
         return Redirect::route('passport.index')->with('message', 'PASSPORT ADD SUCCESSFULLY');
     }
 

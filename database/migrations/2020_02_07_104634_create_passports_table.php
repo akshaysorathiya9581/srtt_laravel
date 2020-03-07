@@ -20,10 +20,14 @@ class CreatePassportsTable extends Migration
             $table->date('issue_date');
             $table->string('issue_place');
             $table->date('expiry_date');
+            $table->date('dob');
             $table->string('ecr');
             $table->integer('country_id')->comment('country_id.ak_countries');
-            $table->text('attached');
+            $table->text('attached')->nullable();
             $table->enum('status', ['0', '1'])->comment('0=old passport,1= new passport');
+            $table->integer('created_by')->default(0);
+            $table->integer('updated_by')->default(0);
+            $table->integer('deleted_by')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

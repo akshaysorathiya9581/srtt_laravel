@@ -77,7 +77,7 @@
             "serverSide": true,
             "bDestroy": true,
             "ajax":{
-                "url": "{{ route('paxprofile.index') }}",
+                "url": "{{ route('passport.index') }}",
                 "dataType": "json",
                 'data': {"_token": "{{ csrf_token() }}"},
             },
