@@ -39,7 +39,7 @@ class PassportController extends Controller
             $dir = $request->input('order.0.dir');
 
             if(empty($request->input('search.value'))) {
-                $passports = Passport::with('clientDetails')->offset($start)
+                $passports = Passport::with(['clientDetails','countryDetails'])->offset($start)
                                     ->limit($limit)
                                     ->orderBy($order,$dir)
                                     ->get()
@@ -48,7 +48,7 @@ class PassportController extends Controller
             } else {
                 $search = $request->input('search.value');
 
-                $passports =  Passport::with('clientDetails')->where('id','LIKE',"%{$search}%")
+                $passports =  Passport::with(['clientDetails','countryDetails'])->where('id','LIKE',"%{$search}%")
                                     ->orWhere('passport_number', 'LIKE',"%{$search}%")
                                     ->offset($start)
                                     ->limit($limit)
@@ -76,8 +76,8 @@ class PassportController extends Controller
                     $nestedData['expiry_date'] = date('d-m-Y',strtotime($passport['expiry_date']));
                     $nestedData['dob'] = date('d-m-Y',strtotime($passport['dob']));
                     $nestedData['ecr'] = $passport['ecr'];
-                    $nestedData['country_id'] = $passport['country_id'];
-                    $nestedData['status'] = $passport['status'];
+                    $nestedData['country_id'] = $passport['country_details']['name'];
+                    $nestedData['status'] = $passport['status'] == '0' ? '<button class="btn btn-danger waves-effect waves-light btn-xs m-b-5">Old Passport</button>' : '<button class="btn btn-success waves-effect waves-light btn-xs m-b-5">New Passport</button>';
                     $nestedData['created_at'] = date('d-m-Y H:i:s',strtotime($passport['created_at']));
                     $nestedData['updated_at'] = date('d-m-Y H:i:s',strtotime($passport['updated_at']));
                     $nestedData['action'] = "&emsp;<a href='{$show}' title='SHOW' ><span class='glyphicon glyphicon-list'></span></a>
@@ -171,7 +171,11 @@ class PassportController extends Controller
      */
     public function edit($id)
     {
-        //
+        $countrys = $this->getAllCountry();
+        $clients = MasterClient::all()->toArray();
+        $data = Passport::find($id)->toArray();
+        // dd($countrys);
+        return view('front-side.passport.edit',compact(['countrys','clients','data']));
     }
 
     /**
@@ -183,7 +187,7 @@ class PassportController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
