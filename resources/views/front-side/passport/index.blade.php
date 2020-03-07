@@ -57,7 +57,7 @@
                         <th>STATUS</th>
                         <th>CREATED DATE</th>
                         <th>UPDATED DATE</th>
-                        <th>ACTION</th>
+                        <th style="width:120px;">ACTION</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,10 +83,15 @@
             },
             "columns": [
                 { "data": "id" },
-                { "data": "reference_code" },
                 { "data": "name" },
-                { "data": "place" },
+                { "data": "passport_number" },
+                { "data": "issue_date" },
+                { "data": "issue_place" },
+                { "data": "expiry_date" },
                 { "data": "dob" },
+                { "data": "ecr" },
+                { "data": "country_id" },
+                { "data": "status" },
                 { "data": "created_at" },
                 { "data": "updated_at" },
                 { "data": "action" }

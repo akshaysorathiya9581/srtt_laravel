@@ -76,6 +76,8 @@ class PassportController extends Controller
                     $nestedData['expiry_date'] = date('d-m-Y',strtotime($passport['expiry_date']));
                     $nestedData['dob'] = date('d-m-Y',strtotime($passport['dob']));
                     $nestedData['ecr'] = $passport['ecr'];
+                    $nestedData['country_id'] = $passport['country_id'];
+                    $nestedData['status'] = $passport['status'];
                     $nestedData['created_at'] = date('d-m-Y H:i:s',strtotime($passport['created_at']));
                     $nestedData['updated_at'] = date('d-m-Y H:i:s',strtotime($passport['updated_at']));
                     $nestedData['action'] = "&emsp;<a href='{$show}' title='SHOW' ><span class='glyphicon glyphicon-list'></span></a>
@@ -94,7 +96,7 @@ class PassportController extends Controller
                 "recordsTotal"    => intval($totalData),
                 "recordsFiltered" => intval($totalFiltered),
                 "data"            => $data
-                );
+            );
 
             echo json_encode($json_data); die();
         }
