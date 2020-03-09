@@ -26,6 +26,8 @@
             <div class="card-box">
                 <form action="{{ route('passport.update',$data['id'])}}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
+                    <input type="hidden" name="id" value="{{ $data['id'] }}">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">

@@ -152,23 +152,11 @@ class PassportController extends Controller
         return Redirect::route('passport.index')->with('message', 'PASSPORT ADD SUCCESSFULLY');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $countrys = $this->getAllCountry();
@@ -178,26 +166,45 @@ class PassportController extends Controller
         return view('front-side.passport.edit',compact(['countrys','clients','data']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(PassportRequest $request, $id)
     {
+        $files = $request->file('files');
 
+        $passport = passport::find($id);
+        $passport->client_id = $request->client;
+        $passport->passport_number = $request->passport_number;
+        $passport->issue_date = date('Y-m-d',strtotime($request->issue_date));
+        $passport->issue_place = $request->issue_place;
+        $passport->expiry_date =date('Y-m-d',strtotime($request->expiry_date));
+        $passport->dob =date('Y-m-d',strtotime($request->dob));
+        $passport->ecr = $request->ecr;
+        $passport->country_id = $request->nationality;
+        $passport->updated_by = Auth::user()->id;
+
+        if ($request->hasFile('files')) {
+            $folder = public_path('passport/' .$passport->id);
+            if (!Storage::exists($folder)) {
+                Storage::makeDirectory($folder, 777, true, true);
+            }
+            $imageData = array();
+            foreach ($files as $k => $file) {
+                $imageName = $file->getFilename().'.'.$file->extension();
+                $file->move($folder,$imageName);
+                $imageData[] = $imageName;
+            }
+            $passport->attached = implode(',',$imageData);
+        }
+        $passport->save();
+        return Redirect::route('passport.index')->with('message', 'PASSPORT UPDATE SUCCESSFULLY');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $passport = passport::find($id);
+        $passport->deleted_by = Auth::user()->id;
+        $passport->save();
+
+        $passport->delete();
+        return Redirect::route('passport.index')->with('message', 'PASSPORT DELETE SUCCESSFULLY');
     }
 }
