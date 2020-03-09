@@ -22,6 +22,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('crm','CrmController');
     Route::resource('paxprofile','PaxProfileController');
     Route::resource('passport','PassportController');
+    Route::resource('membershipcard','MembershipCardController');
     Route::resource('dashboard','DashboardController');
 });
 

@@ -197,7 +197,7 @@
                                         <span>Client Details</span>
                                     </li>
                                      <li><a href="{{ route('passport.index')}}">Passport</a></li>
-                                    <li><a href="javascript:void(0);">Membership Card</a></li>
+                                    <li><a href="{{ route('membershipcard.index')}}">Membership Card</a></li>
                                     <li><a href="javascript:void(0);">Other Document</a></li>
                                     <li><a href="javascript:void(0);">Insurance Document</a></li>
                                     <li><a href="javascript:void(0);">Visa Document</a></li>
