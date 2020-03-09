@@ -18,5 +18,9 @@ trait CommonTrait {
     {
     	return  DB::table('countries')->get()->toArray();
     }
+    public function getAllAirlineList()
+    {
+    	return  DB::table('airlinelists')->get()->toArray();
+    }
 }
 ?>

@@ -43,77 +43,88 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="passport_number">Passport Number<span class="text-danger">*</span></label>
-                                <input type="text" name="passport_number" placeholder="Enter Passport Number" class="form-control " value="{{ old('passport_number') }}" autocomplete="off">
-                                @if ($errors->has('passport_number')) <p style="color:red;">{{ $errors->first('passport_number') }}</p> @endif
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="issue_date">Passport Issue Date</label>
-                                <input type="text" name="issue_date" placeholder="Enter Passport Issue Date" class="form-control " value="{{ old('issue_date') }}" autocomplete="off">
-                                @if ($errors->has('issue_date')) <p style="color:red;">{{ $errors->first('issue_date') }}</p> @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="issue_place">Passport Issue Place<span class="text-danger">*</span></label>
-                                <input type="text" name="issue_place" placeholder="Enter Passport Issue Place" class="form-control " value="{{ old('issue_place') }}" autocomplete="off">
-                                @if ($errors->has('issue_place')) <p style="color:red;">{{ $errors->first('issue_place') }}</p> @endif
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="expiry_date">Passport Expiry Date<span class="text-danger">*</span></label>
-                                <input type="text" name="expiry_date" placeholder="Enter Passport Expiry Date" class="form-control " value="{{ old('expiry_date') }}" autocomplete="off">
-                                @if ($errors->has('expiry_date')) <p style="color:red;">{{ $errors->first('expiry_date') }}</p> @endif
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="dob">Date Of Birth:<span class="text-danger">*</span></label>
-                                <input type="text" name="dob" placeholder="Enter Dob" class="form-control birth" value="{{ old('dob') }}" autocomplete="off">
-                                @if ($errors->has('dob')) <p style="color:red;">{{ $errors->first('dob') }}</p> @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="ecr">ECR/ECNR:<span class="text-danger">*</span></label>
-                                <select name="ecr" class="form-control select2">
-                                    <option value="">Select Ecr/Ecnr</option>
-                                    <option value="EMIGRATION CHECK REQUIRED" @if(old('ecr') == 'EMIGRATION CHECK REQUIRED') selected @endif>EMIGRATION CHECK REQUIRED</option>
-                                    <option value="EMIGRATION CHECK NOT REQUIRED" @if(old('ecr') == 'EMIGRATION CHECK NOT REQUIRED') selected @endif>EMIGRATION CHECK NOT REQUIRED</option>
-                                </select>
-                                @if ($errors->has('ecr')) <p style="color:red;">{{ $errors->first('ecr') }}</p> @endif
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="nationality">Nationality<span class="text-danger">*</span></label>
-                                <select name="nationality" class="form-control select2">
-                                    <option value="">Select Country</option>
-                                     @if (!(empty($countrys)))
-                                        @foreach($countrys as $country)
-                                              <option value="{{ $country->id }}" @if(old('nationality') ==  $country->id) selected @endif>{{ strtoupper($country->name) }}</option>
+                                <label for="airline">Airline Name<span class="text-danger">*</span></label>
+                                <select name="airline" class="form-control select2">
+                                    <option value="">Select Airline Name</option>
+                                     @if (!(empty($airlinelists)))
+                                        @foreach($airlinelists as $airlinelist)
+                                              <option value="{{ $airlinelist['id'] }}"  @if(old('airline') == $airlinelist['id']) selected @endif>{{ strtoupper($airlinelist['name']) }}</option>
                                         @endforeach;
                                     @endif;
                                 </select>
-                                @if ($errors->has('nationality')) <p style="color:red;">{{ $errors->first('nationality') }}</p> @endif
+                                @if ($errors->has('airline')) <p style="color:red;">{{ $errors->first('airline') }}</p> @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="membership_number">Membership Number<span class="text-danger">*</span></label>
+                                <input type="text" name="membership_number" placeholder="Enter Membership Number" class="form-control " value="{{ old('membership_number') }}" autocomplete="off">
+                                @if ($errors->has('membership_number')) <p style="color:red;">{{ $errors->first('membership_number') }}</p> @endif
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>File Uploads</label><span class="text-danger">*</span>
-                                    <input type="file" name="files[]" id="filer_input1" multiple="multiple">
-                                </div>
-                                @if ($errors->has('files')) <p style="color:red;">{{ $errors->first('files') }}</p> @endif
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="text" name="password" placeholder="Enter Password" class="form-control " value="{{ old('password') }}" autocomplete="off">
+                                @if ($errors->has('password')) <p style="color:red;">{{ $errors->first('password') }}</p> @endif
                             </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="email">Email<span class="text-danger">*</span></label>
+                                <input type="text" name="email" placeholder="Enter Email" class="form-control " value="{{ old('email') }}" autocomplete="off">
+                                @if ($errors->has('email')) <p style="color:red;">{{ $errors->first('email') }}</p> @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="phone_number">Phone Number<span class="text-danger">*</span></label>
+                                <input type="text" name="phone_number" placeholder="Enter Phone Number" class="form-control " value="{{ old('phone_number') }}" autocomplete="off">
+                                @if ($errors->has('phone_number')) <p style="color:red;">{{ $errors->first('phone_number') }}</p> @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="securi_quest">Securit Question<span class="text-danger">*</span></label>
+                                <input type="text" name="securi_quest" placeholder="Enter Security Question" class="form-control" value="{{ old('securi_quest') }}" autocomplete="off">
+                                @if ($errors->has('securi_quest')) <p style="color:red;">{{ $errors->first('securi_quest') }}</p> @endif
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="email">Security Question Answer<span class="text-danger">*</span></label>
+                                <input type="text" name="secu_ques_ans" placeholder="Enter Security Question Answer" class="form-control" value="{{ old('secu_ques_ans') }}" autocomplete="off">
+                                @if ($errors->has('secu_ques_ans')) <p style="color:red;">{{ $errors->first('secu_ques_ans') }}</p> @endif
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="family_program">Family Program<span class="text-danger">*</span></label>
+                                <input type="text" name="family_program" placeholder="Enter Family Program" class="form-control " value="{{ old('family_program') }}" autocomplete="off">
+                                @if ($errors->has('family_program')) <p style="color:red;">{{ $errors->first('family_program') }}</p> @endif
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="securi_quest">Security Question<span class="text-danger">*</span></label>
+                                <input type="text" name="securi_quest" placeholder="Enter Security Question" class="form-control" value="{{ old('securi_quest') }}" autocomplete="off">
+                                @if ($errors->has('securi_quest')) <p style="color:red;">{{ $errors->first('securi_quest') }}</p> @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>File Uploads</label><span class="text-danger">*</span>
+                                <input type="file" name="files[]" id="filer_input1" multiple="multiple">
+                            </div>
+                            @if ($errors->has('files')) <p style="color:red;">{{ $errors->first('files') }}</p> @endif
                         </div>
                     </div>
                     <div class="form-group text-right m-b-0">

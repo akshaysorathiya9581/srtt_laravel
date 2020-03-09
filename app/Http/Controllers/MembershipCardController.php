@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\MembershipCard;
+use App\MasterClient;
 use App\Traits\CommonTrait;
 use Illuminate\Http\Request;
 use Auth;
@@ -35,7 +36,7 @@ class MembershipCardController extends Controller
             $dir = $request->input('order.0.dir');
 
             if(empty($request->input('search.value'))) {
-                $membershipCards = MembershipCard::with(['clientDetails','countryDetails'])->offset($start)
+                $membershipCards = MembershipCard::with(['countryDetails'])->offset($start)
                                     ->limit($limit)
                                     ->orderBy($order,$dir)
                                     ->get()
@@ -44,7 +45,7 @@ class MembershipCardController extends Controller
             } else {
                 $search = $request->input('search.value');
 
-                $membershipCards =  MembershipCard::with(['clientDetails','countryDetails'])->where('id','LIKE',"%{$search}%")
+                $membershipCards =  MembershipCard::with(['countryDetails'])->where('id','LIKE',"%{$search}%")
                                     ->orWhere('passport_number', 'LIKE',"%{$search}%")
                                     ->offset($start)
                                     ->limit($limit)
@@ -101,12 +102,47 @@ class MembershipCardController extends Controller
 
     public function create()
     {
-        //
+        $airlinelists = $this->getAllAirlineList();
+        $clients = MasterClient::all()->toArray();
+        return view('front-side.membershipcard.create',compact(['airlinelists','clients']));
     }
 
     public function store(Request $request)
     {
-        //
+        $files = $request->file('files');
+
+        $membershipcard = new MembershipCard();
+        $membershipcard->airline_id = $request->airline;
+        $membershipcard->membership_number = $request->membership_number;
+
+        if ($request->hasAny(['password', 'email','phone_number','securi_quest','secu_ques_ans','family_program','family_head'])) {
+            $membershipcard->password = $request->password;
+            $membershipcard->email = $request->email;
+            $membershipcard->phone_number =$request->phone_number;
+            $membershipcard->securi_quest =$request->securi_quest;
+            $membershipcard->secu_ques_ans = $request->secu_ques_ans;
+            $membershipcard->family_program = $request->family_program;
+            $membershipcard->family_head = $request->family_head;
+        }
+        $membershipcard->created_by = Auth::user()->id;
+
+        if ($request->hasFile('files')) {
+            $folder = public_path('membershipcard/' .$membershipcard->id);
+            if (!Storage::exists($folder)) {
+                Storage::makeDirectory($folder, 777, true, true);
+            }
+            $imageData = array();
+            foreach ($files as $k => $file) {
+                $imageName = $file->getFilename().'.'.$file->extension();
+                $file->move($folder,$imageName);
+                $imageData[] = $imageName;
+            }
+            $membershipcard->attached = implode(',',$imageData);
+            // $imageName = $logo->getFilename().'.'.$logo->extension();
+            // $request->logo->move($folder, $imageName);
+        }
+        $membershipcard->save();
+        return Redirect::route('membershipcard.index')->with('message', 'MEMBERSHIP CARD ADD SUCCESSFULLY');
     }
 
     public function show(MembershipCard $membershipCard)

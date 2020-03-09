@@ -6,7 +6,7 @@
             <div class="btn-group pull-right">
                 <ol class="breadcrumb hide-phone p-0 m-0">
                     <li>
-                        <a href="{{ route('passport.index') }}">Pax Profile Management</a>
+                        <a href="{{ route('membershipcard.index') }}">Membership Card Management</a>
                     </li>
                     <li>
                         <a href="{{ route('dashboard') }}">Dashboard</a>
@@ -14,7 +14,7 @@
                 </ol>
             </div>
             <h4 class="page-title">
-                <a href="{{ route('passport.index') }}" class="btn btn-danger waves-effect waves-light m-b-5 pull-left"> <i class="mdi mdi-reply-all"></i> <span> BACK</span></a>
+                <a href="{{ route('membershipcard.index') }}" class="btn btn-danger waves-effect waves-light m-b-5 pull-left"> <i class="mdi mdi-reply-all"></i> <span> BACK</span></a>
             </h4>
         </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="card-box table-responsive">
             <div class="row">
                 <div class="col-md-12">
-                    <a href="{{ route('passport.create') }}" class="btn btn-inverse waves-effect waves-light m-b-5 pull-right"> <i class="mdi mdi-plus"></i> <span> ADD NEW</span></a>
+                    <a href="{{ route('membershipcard.create') }}" class="btn btn-inverse waves-effect waves-light m-b-5 pull-right"> <i class="mdi mdi-plus"></i> <span> ADD NEW</span></a>
                 </div>
             </div>
             <div class="row">
@@ -46,17 +46,16 @@
                 <thead>
                     <tr>
                         <th>NO</th>
-                        <th>NAME</th>
-                        <th>PASSPORT NUMBER</th>
-                        <th>ISSUE DATE</th>
-                        <th>ISSUE PLACE</th>
-                        <th>EXPIRY DATE</th>
-                        <th>DOB</th>
-                        <th>ECR/ECNR</th>
-                        <th>NATIONALITY</th>
-                        <th>STATUS</th>
-                        <th>CREATED DATE</th>
-                        <th>UPDATED DATE</th>
+                        <th>ATTACHMENT</th>
+                        <th>AIRLINE NAME</th>
+                        <th>MEMBERSHIP NUMBER</th>
+                        <th>PASSWORD</th>
+                        <th>EMAIL</th>
+                        <th>PHONE NUMBER</th>
+                        <th>SECURITY QUESTION</th>
+                        <th>SECURITY QUESTION ANS</th>
+                        <th>FAMILY PROGRAM</th>
+                        <th>FAMILY HEAD</th>
                         <th style="width:120px;">ACTION</th>
                     </tr>
                 </thead>
