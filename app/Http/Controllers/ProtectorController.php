@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Traits\CommonTrait;
+use App\Protector;
+use App\Http\Requests\ProtectorRequest;
 use Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -103,9 +105,26 @@ class ProtectorController extends Controller
         return view('front-side.protector.create',compact(['services']));
     }
 
-    public function store(Request $request)
+    public function store(ProtectorRequest $request)
     {
-        //
+        $protector = new Protector();
+        $protector->login_for = strtoupper($request->login_for);
+        $protector->service_id = $request->service;
+        $protector->terminal_id =$request->terminal_id;
+        $protector->name = $request->name;
+        $protector->password =$request->password;
+        $protector->website =$request->website;
+        $protector->contact_number = $request->contact_number;
+        $protector->support_name = $request->support_name;
+        $protector->support_number = $request->support_number;
+        $protector->created_by = Auth::user()->id;
+        $protector->save();
+
+        if($protector->id > 0) {
+            $this->generateReferenceCode('protectors',$protector->id);
+            return Redirect::route('protector.index')->with('message', 'PROTECTOR ADD SUCCESSFULLY');
+        }
+
     }
 
     public function show($id)
@@ -115,12 +134,25 @@ class ProtectorController extends Controller
 
     public function edit($id)
     {
-        //
+        $data = Protector::find($id)->toArray();
+        return view('front-side.protector.edit',compact(['data']));
     }
 
-    public function update(Request $request, $id)
+    public function update(ProtectorRequest $request, $id)
     {
-        //
+        $protector = Protector::find($id);
+        $protector->login_for = strtoupper($request->login_for);
+        $protector->service_id = $request->service;
+        $protector->terminal_id =$request->terminal_id;
+        $protector->name = $request->name;
+        $protector->password =$request->password;
+        $protector->website =$request->website;
+        $protector->contect = $request->contect;
+        $protector->support = $request->support;
+        $protector->created_by = Auth::user()->id;
+        $protector->save();
+
+        return Redirect::route('protector.index')->with('message', 'PROTECTOR UPDATE SUCCESSFULLY');
     }
 
     public function destroy($id)

@@ -37,7 +37,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="service">Login For Which Service<span class="text-danger">*</span></label>
-                                <select name="service[]" class="form-control select2">
+                                <select name="service[]" class="form-control select2" multiple="multiple">
                                     <option value="">Select Login For Which Service</option>
                                      @if (!(empty($services)))
                                         @foreach($services as $service)
@@ -59,7 +59,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="name">Pame</label>
+                                <label for="name">Name</label>
                                 <input type="text" name="name" placeholder="Enter Name" class="form-control " value="{{ old('name') }}" autocomplete="off">
                                 @if ($errors->has('name')) <p style="color:red;">{{ $errors->first('name') }}</p> @endif
                             </div>
@@ -81,18 +81,25 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label for="contect">Contact Number<span class="text-danger">*</span></label>
-                                <input type="text" name="contect" placeholder="Enter Contact Number" class="form-control" value="{{ old('contect') }}" autocomplete="off">
-                                @if ($errors->has('contect')) <p style="color:red;">{{ $errors->first('contect') }}</p> @endif
+                                <label for="contact_number">Contact Number<span class="text-danger">*</span></label>
+                                <input type="text" name="contact_number" placeholder="Enter Contact Number" class="form-control" value="{{ old('contact_number') }}" autocomplete="off">
+                                @if ($errors->has('contact_number')) <p style="color:red;">{{ $errors->first('contact_number') }}</p> @endif
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label for="support">Urgent Support<span class="text-danger">*</span></label>
-                                <input type="text" name="support" placeholder="Enter Urgent Support" class="form-control" value="{{ old('support') }}" autocomplete="off">
-                                @if ($errors->has('support')) <p style="color:red;">{{ $errors->first('support') }}</p> @endif
+                                <label for="support_name">Urgent Support Name<span class="text-danger">*</span></label>
+                                <input type="text" name="support_name" placeholder="Enter Urgent Support Name" class="form-control" value="{{ old('support_name') }}" autocomplete="off">
+                                @if ($errors->has('support_name')) <p style="color:red;">{{ $errors->first('support_name') }}</p> @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="support_number">Urgent Support Number<span class="text-danger">*</span></label>
+                                <input type="text" name="support_number" placeholder="Enter Urgent Support Number" class="form-control" value="{{ old('support_number') }}" autocomplete="off">
+                                @if ($errors->has('support_number')) <p style="color:red;">{{ $errors->first('support_number') }}</p> @endif
                             </div>
                         </div>
                     </div>
