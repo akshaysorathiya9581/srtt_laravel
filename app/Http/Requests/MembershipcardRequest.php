@@ -15,7 +15,7 @@ class MembershipcardRequest extends FormRequest
     {
         $id =  $this->input('id');
         if ($this->method() == 'PUT') {
-            $attachment = 'required,'.$id;
+            $attachment = '';
         } else  {
             $attachment = 'required';
         }

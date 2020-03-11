@@ -24,8 +24,10 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="card-box">
-                <form action="{{ route('membershipcard.store')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('membershipcard.update',$data['id'])}}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
+                    <input type="hidden" name="id" value="{{ $data['id'] }}">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">

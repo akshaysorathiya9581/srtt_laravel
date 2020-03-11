@@ -167,6 +167,7 @@ class MembershipCardController extends Controller
 
     public function update(MembershipcardRequest $request, $id)
     {
+        $files = $request->file('files');
         $membershipcard = MembershipCard::find($id);
         $membershipcard->client_id = $request->client;
         $membershipcard->airline_id = $request->airline;

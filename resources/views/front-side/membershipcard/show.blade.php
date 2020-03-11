@@ -76,7 +76,7 @@
                                 @endphp
                                 @foreach ($cards as $card)
                                 <div class="col-sm-4">
-                                    <img src="{{ url("public/membershipcard/{$card}")}}" alt="image" class="img-responsive thumb-lg">
+                                    <img src="{{ url("public/membershipcard/{$membershipCards['id']}/{$card}")}}" alt="image" class="img-responsive thumb-lg">
                                 </div>
                                 @endforeach
                             </td>
