@@ -23,6 +23,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('paxprofile','PaxProfileController');
     Route::resource('passport','PassportController');
     Route::resource('membershipcard','MembershipCardController');
+    Route::resource('protector','ProtectorController');
     Route::resource('dashboard','DashboardController');
 });
 

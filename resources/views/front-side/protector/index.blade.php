@@ -6,7 +6,7 @@
             <div class="btn-group pull-right">
                 <ol class="breadcrumb hide-phone p-0 m-0">
                     <li>
-                        <a href="{{ route('membershipcard.index') }}">Membership Card Management</a>
+                        <a href="{{ route('protector.index') }}">Login Protector Management</a>
                     </li>
                     <li>
                         <a href="{{ route('dashboard') }}">Dashboard</a>
@@ -14,7 +14,7 @@
                 </ol>
             </div>
             <h4 class="page-title">
-                <a href="{{ route('membershipcard.index') }}" class="btn btn-danger waves-effect waves-light m-b-5 pull-left"> <i class="mdi mdi-reply-all"></i> <span> BACK</span></a>
+                <a href="{{ route('protector.index') }}" class="btn btn-danger waves-effect waves-light m-b-5 pull-left"> <i class="mdi mdi-reply-all"></i> <span> BACK</span></a>
             </h4>
         </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="card-box table-responsive">
             <div class="row">
                 <div class="col-md-12">
-                    <a href="{{ route('membershipcard.create') }}" class="btn btn-inverse waves-effect waves-light m-b-5 pull-right"> <i class="mdi mdi-plus"></i> <span> ADD NEW</span></a>
+                    <a href="{{ route('protector.create') }}" class="btn btn-inverse waves-effect waves-light m-b-5 pull-right"> <i class="mdi mdi-plus"></i> <span> ADD NEW</span></a>
                 </div>
             </div>
             <div class="row">

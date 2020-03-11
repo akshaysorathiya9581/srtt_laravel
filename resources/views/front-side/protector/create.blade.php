@@ -10,121 +10,90 @@
                             <a href="javascript:void(0);">Dashboard</a>
                         </li>
                         <li>
-                            <a href="{{ route('membershipcard.index') }}">Membership Card</a>
+                            <a href="{{ route('protector.index') }}">Login Protector</a>
                         </li>
                         <li class="active">
-                            Add New MembershipCard
+                            Add New Login Protector
                         </li>
                     </ol>
                 </div>
-                <h4 class="page-title">Add New Membershp Card</h4>
+                <h4 class="page-title">Add New Login Protector</h4>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12">
             <div class="card-box">
-                <form action="{{ route('membershipcard.store')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('protector.store')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="client">Client Name<span class="text-danger">*</span></label>
-                                <select name="client" class="form-control select2">
-                                    <option value="">Select Client Name</option>
-                                     @if (!(empty($clients)))
-                                        @foreach($clients as $client)
-                                              <option value="{{ $client['id'] }}"  @if(old('client') == $client['id']) selected @endif>{{ strtoupper($client['f_name'].' '.$client['m_name'].' '.$client['l_name']) }}</option>
-                                        @endforeach;
-                                    @endif;
-                                </select>
-                                @if ($errors->has('client')) <p style="color:red;">{{ $errors->first('client') }}</p> @endif
+                                <label for="login_for">Login For<span class="text-danger">*</span></label>
+                                <input type="text" name="login_for" placeholder="Enter Login For" class="form-control " value="{{ old('login_for') }}" autocomplete="off">
+                                @if ($errors->has('login_for')) <p style="color:red;">{{ $errors->first('login_for') }}</p> @endif
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="airline">Airline Name<span class="text-danger">*</span></label>
-                                <select name="airline" class="form-control select2">
-                                    <option value="">Select Airline Name</option>
-                                     @if (!(empty($airlinelists)))
-                                        @foreach($airlinelists as $airlinelist)
-                                              <option value="{{ $airlinelist->id }}"  @if(old('airline') == $airlinelist->id) selected @endif>{{ strtoupper($airlinelist->name) }}</option>
+                                <label for="service">Login For Which Service<span class="text-danger">*</span></label>
+                                <select name="service[]" class="form-control select2">
+                                    <option value="">Select Login For Which Service</option>
+                                     @if (!(empty($services)))
+                                        @foreach($services as $service)
+                                              <option value="{{ $service->id }}"  @if(old('service') == $service->id) selected @endif>{{ strtoupper($service->name) }}</option>
                                         @endforeach;
                                     @endif;
                                 </select>
-                                @if ($errors->has('airline')) <p style="color:red;">{{ $errors->first('airline') }}</p> @endif
+                                @if ($errors->has('service')) <p style="color:red;">{{ $errors->first('service') }}</p> @endif
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="membership_number">Membership Number<span class="text-danger">*</span></label>
-                                <input type="text" name="membership_number" placeholder="Enter Membership Number" class="form-control " value="{{ old('membership_number') }}" autocomplete="off">
-                                @if ($errors->has('membership_number')) <p style="color:red;">{{ $errors->first('membership_number') }}</p> @endif
+                                <label for="terminal_id">Terminal Id<span class="text-danger">*</span></label>
+                                <input type="text" name="terminal_id" placeholder="Enter Terminal Id" class="form-control " value="{{ old('terminal_id') }}" autocomplete="off">
+                                @if ($errors->has('terminal_id')) <p style="color:red;">{{ $errors->first('terminal_id') }}</p> @endif
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="password">Password</label>
+                                <label for="name">Pame</label>
+                                <input type="text" name="name" placeholder="Enter Name" class="form-control " value="{{ old('name') }}" autocomplete="off">
+                                @if ($errors->has('name')) <p style="color:red;">{{ $errors->first('name') }}</p> @endif
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="password">Password<span class="text-danger">*</span></label>
                                 <input type="text" name="password" placeholder="Enter Password" class="form-control " value="{{ old('password') }}" autocomplete="off">
                                 @if ($errors->has('password')) <p style="color:red;">{{ $errors->first('password') }}</p> @endif
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="email">Email<span class="text-danger">*</span></label>
-                                <input type="text" name="email" placeholder="Enter Email" class="form-control " value="{{ old('email') }}" autocomplete="off">
-                                @if ($errors->has('email')) <p style="color:red;">{{ $errors->first('email') }}</p> @endif
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="phone_number">Phone Number<span class="text-danger">*</span></label>
-                                <input type="text" name="phone_number" placeholder="Enter Phone Number" class="form-control " value="{{ old('phone_number') }}" autocomplete="off">
-                                @if ($errors->has('phone_number')) <p style="color:red;">{{ $errors->first('phone_number') }}</p> @endif
+                                <label for="website">Website<span class="text-danger">*</span></label>
+                                <input type="text" name="website" placeholder="Enter Website" class="form-control " value="{{ old('website') }}" autocomplete="off">
+                                @if ($errors->has('website')) <p style="color:red;">{{ $errors->first('website') }}</p> @endif
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label for="securi_quest">Securit Question<span class="text-danger">*</span></label>
-                                <input type="text" name="securi_quest" placeholder="Enter Security Question" class="form-control" value="{{ old('securi_quest') }}" autocomplete="off">
-                                @if ($errors->has('securi_quest')) <p style="color:red;">{{ $errors->first('securi_quest') }}</p> @endif
+                                <label for="contect">Contact Number<span class="text-danger">*</span></label>
+                                <input type="text" name="contect" placeholder="Enter Contact Number" class="form-control" value="{{ old('contect') }}" autocomplete="off">
+                                @if ($errors->has('contect')) <p style="color:red;">{{ $errors->first('contect') }}</p> @endif
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label for="email">Security Question Answer<span class="text-danger">*</span></label>
-                                <input type="text" name="secu_ques_ans" placeholder="Enter Security Question Answer" class="form-control" value="{{ old('secu_ques_ans') }}" autocomplete="off">
-                                @if ($errors->has('secu_ques_ans')) <p style="color:red;">{{ $errors->first('secu_ques_ans') }}</p> @endif
+                                <label for="support">Urgent Support<span class="text-danger">*</span></label>
+                                <input type="text" name="support" placeholder="Enter Urgent Support" class="form-control" value="{{ old('support') }}" autocomplete="off">
+                                @if ($errors->has('support')) <p style="color:red;">{{ $errors->first('support') }}</p> @endif
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="family_program">Family Program<span class="text-danger">*</span></label>
-                                <input type="text" name="family_program" placeholder="Enter Family Program" class="form-control " value="{{ old('family_program') }}" autocomplete="off">
-                                @if ($errors->has('family_program')) <p style="color:red;">{{ $errors->first('family_program') }}</p> @endif
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="family_head">Family Head<span class="text-danger">*</span></label>
-                                <input type="text" name="family_head" placeholder="Enter Family Head" class="form-control" value="{{ old('family_head') }}" autocomplete="off">
-                                @if ($errors->has('family_head')) <p style="color:red;">{{ $errors->first('family_head') }}</p> @endif
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>File Uploads</label><span class="text-danger">*</span>
-                                <input type="file" name="files[]" id="filer_input1" multiple="multiple">
-                            </div>
-                            @if ($errors->has('files')) <p style="color:red;">{{ $errors->first('files') }}</p> @endif
                         </div>
                     </div>
                     <div class="form-group text-right m-b-0">
