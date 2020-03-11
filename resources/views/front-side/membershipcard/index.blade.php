@@ -46,16 +46,14 @@
                 <thead>
                     <tr>
                         <th>NO</th>
-                        <th>ATTACHMENT</th>
+                        <th>NAME</th>
                         <th>AIRLINE NAME</th>
                         <th>MEMBERSHIP NUMBER</th>
                         <th>PASSWORD</th>
                         <th>EMAIL</th>
                         <th>PHONE NUMBER</th>
-                        <th>SECURITY QUESTION</th>
-                        <th>SECURITY QUESTION ANS</th>
-                        <th>FAMILY PROGRAM</th>
-                        <th>FAMILY HEAD</th>
+                        <th>CREATED DATE</th>
+                        <th>UPDATED DATE</th>
                         <th style="width:120px;">ACTION</th>
                     </tr>
                 </thead>
@@ -76,21 +74,18 @@
             "serverSide": true,
             "bDestroy": true,
             "ajax":{
-                "url": "{{ route('passport.index') }}",
+                "url": "{{ route('membershipcard.index') }}",
                 "dataType": "json",
                 'data': {"_token": "{{ csrf_token() }}"},
             },
             "columns": [
                 { "data": "id" },
                 { "data": "name" },
-                { "data": "passport_number" },
-                { "data": "issue_date" },
-                { "data": "issue_place" },
-                { "data": "expiry_date" },
-                { "data": "dob" },
-                { "data": "ecr" },
-                { "data": "country_id" },
-                { "data": "status" },
+                { "data": "airline_name" },
+                { "data": "membership_number" },
+                { "data": "password" },
+                { "data": "email" },
+                { "data": "phone_number" },
                 { "data": "created_at" },
                 { "data": "updated_at" },
                 { "data": "action" }

@@ -25,12 +25,12 @@ class AirlineListController extends Controller
     {
         if ($request->ajax()) {
             $columns = array(
-                0 =>'id',
-                1 =>'image',
-                2 =>'name',
-                3 =>'membership_plan',
-                4 =>'airline_group',
-                5 =>'airline_gst',
+                0 => 'id',
+                1 => 'image',
+                2 => 'name',
+                3 => 'membership_plan',
+                4 => 'airline_group',
+                5 => 'airline_gst',
                 6 => 'created_at',
                 7 => 'updated_at',
                 8 => 'id',

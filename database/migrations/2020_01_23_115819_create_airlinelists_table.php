@@ -17,7 +17,7 @@ class CreateAirlinelistsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('membership_plan');
-            $table->integer('airline_group');
+            $table->integer('airline_group_id');
             $table->enum('airline_gst', ['0', '1'])->default('0');
             $table->string('email')->nullable();
             $table->string('phone_number')->nullable();

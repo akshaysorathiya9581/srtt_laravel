@@ -48,7 +48,7 @@
                                     <option value="">Select Airline Name</option>
                                      @if (!(empty($airlinelists)))
                                         @foreach($airlinelists as $airlinelist)
-                                              <option value="{{ $airlinelist['id'] }}"  @if(old('airline') == $airlinelist['id']) selected @endif>{{ strtoupper($airlinelist['name']) }}</option>
+                                              <option value="{{ $airlinelist->id }}"  @if(old('airline') == $airlinelist->id) selected @endif>{{ strtoupper($airlinelist->name) }}</option>
                                         @endforeach;
                                     @endif;
                                 </select>
@@ -111,9 +111,9 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="securi_quest">Security Question<span class="text-danger">*</span></label>
-                                <input type="text" name="securi_quest" placeholder="Enter Security Question" class="form-control" value="{{ old('securi_quest') }}" autocomplete="off">
-                                @if ($errors->has('securi_quest')) <p style="color:red;">{{ $errors->first('securi_quest') }}</p> @endif
+                                <label for="family_head">Family Head<span class="text-danger">*</span></label>
+                                <input type="text" name="family_head" placeholder="Enter Family Head" class="form-control" value="{{ old('family_head') }}" autocomplete="off">
+                                @if ($errors->has('family_head')) <p style="color:red;">{{ $errors->first('family_head') }}</p> @endif
                             </div>
                         </div>
                     </div>

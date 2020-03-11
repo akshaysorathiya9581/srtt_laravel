@@ -20,7 +20,7 @@ trait CommonTrait {
     }
     public function getAllAirlineList()
     {
-    	return  DB::table('airlinelists')->get()->toArray();
+    	return  DB::table('airlinelists')->get();
     }
 }
 ?>

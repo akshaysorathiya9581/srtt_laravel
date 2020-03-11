@@ -6,7 +6,10 @@ use App\MembershipCard;
 use App\MasterClient;
 use App\Traits\CommonTrait;
 use Illuminate\Http\Request;
+use App\Http\Requests\MembershipcardRequest;
 use Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class MembershipCardController extends Controller
 {
@@ -36,17 +39,17 @@ class MembershipCardController extends Controller
             $dir = $request->input('order.0.dir');
 
             if(empty($request->input('search.value'))) {
-                $membershipCards = MembershipCard::with(['countryDetails'])->offset($start)
+                $membershipCards = MembershipCard::with(['airlineDetails','clientDetails'])->offset($start)
                                     ->limit($limit)
                                     ->orderBy($order,$dir)
                                     ->get()
                                     ->toArray();
-                // dd($paxprofiles->toArray());
+                // dd($membershipCards);
             } else {
                 $search = $request->input('search.value');
 
-                $membershipCards =  MembershipCard::with(['countryDetails'])->where('id','LIKE',"%{$search}%")
-                                    ->orWhere('passport_number', 'LIKE',"%{$search}%")
+                $membershipCards =  MembershipCard::with(['airlineDetails','clientDetails'])->where('id','LIKE',"%{$search}%")
+                                    ->orWhere('membership_number', 'LIKE',"%{$search}%")
                                     ->offset($start)
                                     ->limit($limit)
                                     ->orderBy($order,$dir)
@@ -54,7 +57,7 @@ class MembershipCardController extends Controller
                                     ->toArray();
 
                 $totalFiltered = MembershipCard::where('id','LIKE',"%{$search}%")
-                                    ->orWhere('passport_number', 'LIKE',"%{$search}%")
+                                    ->orWhere('membership_number', 'LIKE',"%{$search}%")
                                     ->count();
             }
             // dd($passports);
@@ -67,14 +70,11 @@ class MembershipCardController extends Controller
 
                     $nestedData['id'] = $membershipCard['id'];
                     $nestedData['name'] = $membershipCard['client_details']['f_name'].' '.$membershipCard['client_details']['m_name'].' '.$membershipCard['client_details']['l_name'];
-                    $nestedData['passport_number'] = $membershipCard['passport_number'];
-                    $nestedData['issue_date'] = date('d-m-Y',strtotime($membershipCard['issue_date']));
-                    $nestedData['issue_place'] = $membershipCard['issue_place'];
-                    $nestedData['expiry_date'] = date('d-m-Y',strtotime($membershipCard['expiry_date']));
-                    $nestedData['dob'] = date('d-m-Y',strtotime($membershipCard['dob']));
-                    $nestedData['ecr'] = $membershipCard['ecr'];
-                    $nestedData['country_id'] = $membershipCard['country_details']['name'];
-                    $nestedData['status'] = $membershipCard['status'] == '0' ? '<button class="btn btn-danger waves-effect waves-light btn-xs m-b-5">Old Passport</button>' : '<button class="btn btn-success waves-effect waves-light btn-xs m-b-5">New Passport</button>';
+                    $nestedData['airline_name'] = $membershipCard['airline_details']['name'];
+                    $nestedData['membership_number'] = $membershipCard['membership_number'];
+                    $nestedData['password'] = $membershipCard['password'];
+                    $nestedData['email'] = $membershipCard['email'];
+                    $nestedData['phone_number'] = $membershipCard['phone_number'];
                     $nestedData['created_at'] = date('d-m-Y H:i:s',strtotime($membershipCard['created_at']));
                     $nestedData['updated_at'] = date('d-m-Y H:i:s',strtotime($membershipCard['updated_at']));
                     $nestedData['action'] = "&emsp;<a href='{$show}' title='SHOW' ><span class='glyphicon glyphicon-list'></span></a>
@@ -103,15 +103,17 @@ class MembershipCardController extends Controller
     public function create()
     {
         $airlinelists = $this->getAllAirlineList();
+        // dd($airlinelists);
         $clients = MasterClient::all()->toArray();
         return view('front-side.membershipcard.create',compact(['airlinelists','clients']));
     }
 
-    public function store(Request $request)
+    public function store(MembershipcardRequest $request)
     {
         $files = $request->file('files');
 
         $membershipcard = new MembershipCard();
+        $membershipcard->client_id = $request->client;
         $membershipcard->airline_id = $request->airline;
         $membershipcard->membership_number = $request->membership_number;
 
@@ -145,23 +147,68 @@ class MembershipCardController extends Controller
         return Redirect::route('membershipcard.index')->with('message', 'MEMBERSHIP CARD ADD SUCCESSFULLY');
     }
 
-    public function show(MembershipCard $membershipCard)
+    public function show($id)
     {
-        //
+        $membershipCards = MembershipCard::with(['airlineDetails','clientDetails','createdBy','updatedBy'])
+                            ->find($id)
+                            ->toArray();
+        // dd($membershipCards);
+        return view('front-side.membershipcard.show',compact(['membershipCards']));
     }
 
-    public function edit(MembershipCard $membershipCard)
+    public function edit($id)
     {
-        //
+        $airlinelists = $this->getAllAirlineList();
+        $clients = MasterClient::all()->toArray();
+        $data = MembershipCard::with(['airlineDetails','clientDetails'])->find($id)->toArray();
+
+        return view('front-side.membershipcard.edit',compact(['airlinelists','clients','data']));
     }
 
-    public function update(Request $request, MembershipCard $membershipCard)
+    public function update(MembershipcardRequest $request, $id)
     {
-        //
+        $membershipcard = MembershipCard::find($id);
+        $membershipcard->client_id = $request->client;
+        $membershipcard->airline_id = $request->airline;
+        $membershipcard->membership_number = $request->membership_number;
+
+        if ($request->hasAny(['password', 'email','phone_number','securi_quest','secu_ques_ans','family_program','family_head'])) {
+            $membershipcard->password = $request->password;
+            $membershipcard->email = $request->email;
+            $membershipcard->phone_number =$request->phone_number;
+            $membershipcard->securi_quest =$request->securi_quest;
+            $membershipcard->secu_ques_ans = $request->secu_ques_ans;
+            $membershipcard->family_program = $request->family_program;
+            $membershipcard->family_head = $request->family_head;
+        }
+        $membershipcard->updated_by = Auth::user()->id;
+
+        if ($request->hasFile('files')) {
+            $folder = public_path('membershipcard/' .$membershipcard->id);
+            if (!Storage::exists($folder)) {
+                Storage::makeDirectory($folder, 777, true, true);
+            }
+            $imageData = array();
+            foreach ($files as $k => $file) {
+                $imageName = $file->getFilename().'.'.$file->extension();
+                $file->move($folder,$imageName);
+                $imageData[] = $imageName;
+            }
+            $membershipcard->attached = implode(',',$imageData);
+            // $imageName = $logo->getFilename().'.'.$logo->extension();
+            // $request->logo->move($folder, $imageName);
+        }
+        $membershipcard->save();
+        return Redirect::route('membershipcard.index')->with('message', 'MEMBERSHIP CARD UPDATE SUCCESSFULLY');
     }
 
-    public function destroy(MembershipCard $membershipCard)
+    public function destroy($id)
     {
-        //
+        $membershipcard = MembershipCard::find($id);
+        $membershipcard->deleted_by = Auth::user()->id;
+        $membershipcard->save();
+
+        $membershipcard->delete();
+        return Redirect::route('membershipcard.index')->with('message', 'MEMBERSHIP CARD DELETE SUCCESSFULLY');
     }
 }

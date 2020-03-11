@@ -13,7 +13,7 @@ class CreateMembershipcardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('membershipcards', function (Blueprint $table) {
+        Schema::create('membership_cards', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('airline_id')->comment('airline_id.airlinelists');
             $table->string('membership_number');
@@ -40,6 +40,6 @@ class CreateMembershipcardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('membershipcards');
+        Schema::dropIfExists('membership_cards');
     }
 }
