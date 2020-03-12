@@ -20,11 +20,9 @@ class UnderController extends Controller
                 0 => 'id',
                 1 => 'reference_code',
                 2 => 'name',
-                3 => 'place',
-                4 => 'dob',
-                5 => 'created_at',
-                6 => 'updated_at',
-                7 => 'id',
+                3 => 'created_at',
+                4 => 'updated_at',
+                5 => 'id',
             );
 
             $totalData = Under::count();
@@ -48,7 +46,7 @@ class UnderController extends Controller
                 $search = $request->input('search.value');
 
                 $unders =  Under::where('id','LIKE',"%{$search}%")
-                                    ->orWhere('membership_number', 'LIKE',"%{$search}%")
+                                    ->orWhere('name', 'LIKE',"%{$search}%")
                                     ->offset($start)
                                     ->limit($limit)
                                     ->orderBy($order,$dir)
@@ -56,33 +54,26 @@ class UnderController extends Controller
                                     ->toArray();
 
                 $totalFiltered = Under::where('id','LIKE',"%{$search}%")
-                                    ->orWhere('membership_number', 'LIKE',"%{$search}%")
+                                    ->orWhere('name', 'LIKE',"%{$search}%")
                                     ->count();
             }
             // dd($protectors);
             $data = array();
-            if(!empty($protectors)){
-                foreach ($protectors as $protector) {
+            if(!empty($unders)){
+                foreach ($unders as $under) {
 
-                    $show =  route('protector.show',$protector['id']);
-                    $edit =  route('protector.edit',$protector['id']);
-                    $delete =  route('protector.destroy',$protector['id']);
+                    $show =  route('under.show',$under['id']);
+                    $edit =  route('under.edit',$under['id']);
+                    $delete =  route('under.destroy',$under['id']);
 
-                    $nestedData['id'] = $protector['id'];
-                    $nestedData['reference_code'] = $protector['reference_code'];
-                    $nestedData['login_for'] = $protector['login_for'];
-                    $nestedData['terminal_id'] = $protector['terminal_id'];
-                    $nestedData['name'] = $protector['name'];
-                    $nestedData['password'] = $protector['password'];
-                    $nestedData['website'] = '<a href="'.$protector['website'].'" target="_blank">'.$protector['website'].'</a>';
-                    $nestedData['contact_number'] = $protector['contact_number'];
-                    $nestedData['support_name'] = $protector['support_name'];
-                    $nestedData['support_number'] = $protector['support_number'];
-                    $nestedData['created_at'] = date('d-m-Y H:i:s',strtotime($protector['created_at']));
-                    $nestedData['updated_at'] = date('d-m-Y H:i:s',strtotime($protector['updated_at']));
+                    $nestedData['id'] = $under['id'];
+                    $nestedData['reference_code'] = $under['reference_code'];
+                    $nestedData['name'] = $under['name'];
+                    $nestedData['created_at'] = date('d-m-Y H:i:s',strtotime($under['created_at']));
+                    $nestedData['updated_at'] = date('d-m-Y H:i:s',strtotime($under['updated_at']));
                     $nestedData['action'] = "&emsp;<a href='{$show}' title='SHOW' ><span class='glyphicon glyphicon-list'></span></a>
                                             &emsp;<a href='{$edit}' title='EDIT' ><span class='glyphicon glyphicon-edit'></span></a>
-                                            &emsp;<a href='javascript:void(0);' class='delete-btn' data-id='".$protector['id']."'><span class='glyphicon glyphicon-trash'></span>
+                                            &emsp;<a href='javascript:void(0);' class='delete-btn' data-id='".$under['id']."'><span class='glyphicon glyphicon-trash'></span>
                                             <form action='".$delete."' method='POST'>
                                                 <input type='hidden' name='_method' value='DELETE'>
                                                 <input type='hidden' name='_token' value='".csrf_token()."'>
@@ -117,7 +108,7 @@ class UnderController extends Controller
 
         if($under->id > 0) {
             $this->generateReferenceCode('unders',$under->id);
-            return Redirect::route('unders.index')->with('message', 'UNDER ADD SUCCESSFULLY');
+            return Redirect::route('under.index')->with('message', 'UNDER ADD SUCCESSFULLY');
         }
 
     }
@@ -129,7 +120,7 @@ class UnderController extends Controller
 
     public function edit($id)
     {
-        $data = Under::find($id);
+        $data = Under::find($id)->toArray();
         return view('admin-side.under.edit',compact(['data']));
     }
 

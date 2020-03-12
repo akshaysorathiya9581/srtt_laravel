@@ -41,6 +41,7 @@
                 <thead>
                 <tr>
                     <th>NO</th>
+                    <th>REFERENCE CODE</th>
                     <th>NAME</th>
                     <th>CREATED DATE</th>
                     <th>UPDATED DATE</th>
@@ -67,6 +68,7 @@
             },
             "columns": [
                 { "data": "id" },
+                { "data": "reference_code" },
                 { "data": "name" },
                 { "data": "created_at" },
                 { "data": "updated_at" },
