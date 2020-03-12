@@ -16,9 +16,9 @@ class CreateProtectorsTable extends Migration
         Schema::create('protectors', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('reference_code')->nullable();
-            $table->integer('   ')->nullable();
+            $table->integer('ref_id')->nullable();
             $table->text('login_for');
-            $table->integer('service_id')->comment('service_id.services');
+            $table->string('service_id')->comment('service_id.services');
             $table->string('terminal_id');
             $table->string('name');
             $table->string('password');

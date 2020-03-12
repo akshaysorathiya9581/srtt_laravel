@@ -24,6 +24,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('passport','PassportController');
     Route::resource('membershipcard','MembershipCardController');
     Route::resource('protector','ProtectorController');
+    Route::resource('accountopen','AccountOpenController');
     Route::resource('dashboard','DashboardController');
 });
 
@@ -46,6 +47,7 @@ Route::group(array('namespace' => 'admin', 'prefix' => 'admin','middleware' => '
     Route::resource('users','UserController');
     Route::resource('permissions','PermissionController');
     Route::resource('services','ServiceController');
+    Route::resource('under','UnderController');
 });
 // Route::group(['prefix' => 'admin'], function(){
 // 	Route::get('/dashboard', 'admin\DashboardController@index')->name('dashboard');

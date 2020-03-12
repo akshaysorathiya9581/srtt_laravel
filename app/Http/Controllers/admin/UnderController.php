@@ -1,18 +1,17 @@
 <?php
+namespace App\Http\Controllers\admin;
 
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\UnderRequest;
+use App\Under;
 use App\Traits\CommonTrait;
-use App\Protector;
-use App\Http\Requests\ProtectorRequest;
+use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Redirect;
-use App\Service;
 
-class ProtectorController extends Controller
+
+class UnderController extends Controller
 {
-
     use CommonTrait;
     public function index(Request $request)
     {
@@ -28,7 +27,7 @@ class ProtectorController extends Controller
                 7 => 'id',
             );
 
-            $totalData = Protector::count();
+            $totalData = Under::count();
 
             $totalFiltered = $totalData;
 
@@ -39,7 +38,7 @@ class ProtectorController extends Controller
             $dir = $request->input('order.0.dir');
 
             if(empty($request->input('search.value'))) {
-                $protectors = Protector::offset($start)
+                $unders = Under::offset($start)
                                     ->limit($limit)
                                     ->orderBy($order,$dir)
                                     ->get()
@@ -48,7 +47,7 @@ class ProtectorController extends Controller
             } else {
                 $search = $request->input('search.value');
 
-                $protectors =  Protector::where('id','LIKE',"%{$search}%")
+                $unders =  Under::where('id','LIKE',"%{$search}%")
                                     ->orWhere('membership_number', 'LIKE',"%{$search}%")
                                     ->offset($start)
                                     ->limit($limit)
@@ -56,7 +55,7 @@ class ProtectorController extends Controller
                                     ->get()
                                     ->toArray();
 
-                $totalFiltered = Protector::where('id','LIKE',"%{$search}%")
+                $totalFiltered = Under::where('id','LIKE',"%{$search}%")
                                     ->orWhere('membership_number', 'LIKE',"%{$search}%")
                                     ->count();
             }
@@ -64,8 +63,7 @@ class ProtectorController extends Controller
             $data = array();
             if(!empty($protectors)){
                 foreach ($protectors as $protector) {
-                    $services = Service::whereIn('id', explode(',', $protector['service_id']))->pluck('name')->toArray();
-                    // dd($services);
+
                     $show =  route('protector.show',$protector['id']);
                     $edit =  route('protector.edit',$protector['id']);
                     $delete =  route('protector.destroy',$protector['id']);
@@ -73,7 +71,6 @@ class ProtectorController extends Controller
                     $nestedData['id'] = $protector['id'];
                     $nestedData['reference_code'] = $protector['reference_code'];
                     $nestedData['login_for'] = $protector['login_for'];
-                    $nestedData['service'] = strtoupper(implode(',',$services));
                     $nestedData['terminal_id'] = $protector['terminal_id'];
                     $nestedData['name'] = $protector['name'];
                     $nestedData['password'] = $protector['password'];
@@ -103,75 +100,55 @@ class ProtectorController extends Controller
 
             echo json_encode($json_data); die();
         }
-        return view('front-side.protector.index');
+        return view('admin-side.under.index');
     }
 
     public function create()
     {
-        $services = $this->getServicesAllList();
-        return view('front-side.protector.create',compact(['services']));
+        return view('admin-side.under.create');
     }
 
-    public function store(ProtectorRequest $request)
+    public function store(UnderRequest $request)
     {
-        // dd($request->all());
-        $protector = new Protector();
-        $protector->login_for = strtoupper($request->login_for);
-        $protector->service_id = implode(',',$request->service);
-        $protector->terminal_id =$request->terminal_id;
-        $protector->name = $request->name;
-        $protector->password =$request->password;
-        $protector->website =$request->website;
-        $protector->contact_number = $request->contact_number;
-        $protector->support_name = $request->support_name;
-        $protector->support_number = $request->support_number;
-        $protector->created_by = Auth::user()->id;
-        $protector->save();
+        $under = new Under();
+        $under->name = strtoupper($request->name);
+        $under->created_by = Auth::user()->id;
+        $under->save();
 
-        if($protector->id > 0) {
-            $this->generateReferenceCode('protectors',$protector->id);
-            return Redirect::route('protector.index')->with('message', 'PROTECTOR ADD SUCCESSFULLY');
+        if($under->id > 0) {
+            $this->generateReferenceCode('unders',$under->id);
+            return Redirect::route('unders.index')->with('message', 'UNDER ADD SUCCESSFULLY');
         }
 
     }
 
     public function show($id)
     {
-        //
+
     }
 
     public function edit($id)
     {
-        $data = Protector::find($id)->toArray();
-        $services = $this->getServicesAllList();
-        return view('front-side.protector.edit',compact(['data','services']));
+        $data = Under::find($id);
+        return view('admin-side.under.edit',compact(['data']));
     }
 
-    public function update(ProtectorRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $protector = Protector::find($id);
-        $protector->login_for = strtoupper($request->login_for);
-        $protector->service_id = implode(',',$request->service);
-        $protector->terminal_id =$request->terminal_id;
-        $protector->name = $request->name;
-        $protector->password =$request->password;
-        $protector->website =$request->website;
-        $protector->contact_number = $request->contact_number;
-        $protector->support_name = $request->support_name;
-        $protector->support_number = $request->support_number;
-        $protector->updated_by = Auth::user()->id;
-        $protector->save();
-
-        return Redirect::route('protector.index')->with('message', 'PROTECTOR UPDATE SUCCESSFULLY');
+        $under = Under::find($id);
+        $under->name =strtoupper($request->name);
+        $under->created_by = Auth::user()->id;
+        $under->save();
+        return Redirect::route('under.index')->with('message', 'UNDER UPDATE SUCCESSFULLY');
     }
 
     public function destroy($id)
     {
-        $protector = Protector::find($id);
-        $protector->deleted_by = Auth::user()->id;
-        $protector->save();
+        $under = Under::find($id);
+        $under->deleted_by = Auth::user()->id;
+        $under->save();
 
-        $protector->delete();
-        return Redirect::route('protector.index')->with('message', 'PROTECTOR DELETE SUCCESSFULLY');
+        $under->delete();
+        return Redirect::route('under.index')->with('message', 'UNDER DELETE SUCCESSFULLY');
     }
 }

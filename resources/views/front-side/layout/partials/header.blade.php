@@ -217,6 +217,9 @@
                     <li class="has-submenu">
                         <a href="{{ route('protector.index') }}"><i class="mdi mdi-lock"></i>LOGIN PROTECTOR</a>
                     </li>
+                    <li class="has-submenu">
+                        <a href="{{ route('accountopen.index') }}"><i class="mdi mdi-lock"></i>ACCOUNT OPEN</a>
+                    </li>
                    <!--  <li class="has-submenu">
                         <a href="#"><i class="mdi mdi-diamond"></i>Components</a>
                         <ul class="submenu">

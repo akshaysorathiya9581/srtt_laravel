@@ -17,7 +17,7 @@ class ProtectorRequest extends FormRequest
 
         return [
             'login_for' => 'required',
-            'service[]' => 'required',
+            'service' => 'required',
             'terminal_id' => 'required',
             'name' => 'required',
             'password' => 'required',
@@ -32,12 +32,12 @@ class ProtectorRequest extends FormRequest
     {
         return [
             'login_for.required' => 'Please enter login for',
-            'service[].required' => 'Please select service name',
+            'service.required' => 'Please select service name',
             'terminal_id.required'  => 'Please enter terminal id',
             'name.required'  => 'Please enter name',
             'password.required'  => 'Please enter password',
             'website.required'  => 'Please enter website url',
-            'contact_number.required'  => 'Please enter contect number',
+            'contact_number.required'  => 'Please enter contact number',
             'support_name.required'  => 'Please enter urgent support name',
             'support_number.required'  => 'Please enter urgent support number'
         ];
