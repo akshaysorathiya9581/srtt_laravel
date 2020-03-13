@@ -12,7 +12,6 @@ use App\Service;
 
 class ProtectorController extends Controller
 {
-
     use CommonTrait;
     public function index(Request $request)
     {

@@ -6,7 +6,7 @@
             <div class="btn-group pull-right">
                 <ol class="breadcrumb hide-phone p-0 m-0">
                     <li>
-                        <a href="{{ route('protector.index') }}">Login Protector Management</a>
+                        <a href="{{ route('accountopen.index') }}">Account Open Management</a>
                     </li>
                     <li>
                         <a href="{{ route('dashboard') }}">Dashboard</a>
@@ -14,7 +14,7 @@
                 </ol>
             </div>
             <h4 class="page-title">
-                <a href="{{ route('protector.index') }}" class="btn btn-danger waves-effect waves-light m-b-5 pull-left"> <i class="mdi mdi-reply-all"></i> <span> BACK</span></a>
+                <a href="{{ route('accountopen.index') }}" class="btn btn-danger waves-effect waves-light m-b-5 pull-left"> <i class="mdi mdi-reply-all"></i> <span> BACK</span></a>
             </h4>
         </div>
     </div>
@@ -26,7 +26,7 @@
         <div class="card-box table-responsive">
             <div class="row">
                 <div class="col-md-12">
-                    <a href="{{ route('protector.create') }}" class="btn btn-inverse waves-effect waves-light m-b-5 pull-right"> <i class="mdi mdi-plus"></i> <span> ADD NEW</span></a>
+                    <a href="{{ route('accountopen.create') }}" class="btn btn-inverse waves-effect waves-light m-b-5 pull-right"> <i class="mdi mdi-plus"></i> <span> ADD NEW</span></a>
                 </div>
             </div>
             <div class="row">
@@ -47,15 +47,9 @@
                     <tr>
                         <th>No</th>
                         <th>Reference Code</th>
-                        <th>Login For</th>
-                        <th>Service</th>
-                        <th>Terminal Id</th>
                         <th>Name</th>
-                        <th>Password</th>
-                        <th>Website</th>
-                        <th>Contact Number</th>
-                        <th>Support Name</th>
-                        <th>Support Number</th>
+                        <th>Client Reference</th>
+                        <th>Under</th>
                         <th>Created Date</th>
                         <th>Updated Date</th>
                         <th style="width:120px;">Action</th>
@@ -78,22 +72,16 @@
             "serverSide": true,
             "bDestroy": true,
             "ajax":{
-                "url": "{{ route('protector.index') }}",
+                "url": "{{ route('accountopen.index') }}",
                 "dataType": "json",
                 'data': {"_token": "{{ csrf_token() }}"},
             },
             "columns": [
                 { "data": "id" },
                 { "data": "reference_code" },
-                { "data": "login_for" },
-                { "data": "service" },
-                { "data": "terminal_id" },
                 { "data": "name" },
-                { "data": "password" },
-                { "data": "website" },
-                { "data": "contact_number" },
-                { "data": "support_name" },
-                { "data": "support_number" },
+                { "data": "client_reference" },
+                { "data": "under" },
                 { "data": "created_at" },
                 { "data": "updated_at" },
                 { "data": "action" }
