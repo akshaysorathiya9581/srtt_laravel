@@ -34,7 +34,7 @@
                                 <input type="text" name="name" placeholder="Enter Client Name" class="form-control " value="{{ old('name') }}" autocomplete="off">
                                 @if ($errors->has('name')) <p style="color:red;">{{ $errors->first('name') }}</p> @endif
                             </div>
-                        </div> 
+                        </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="name">Email<span class="text-danger">*</span></label>
@@ -49,7 +49,7 @@
                                 @if ($errors->has('place')) <p style="color:red;">{{ $errors->first('place') }}</p> @endif
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
@@ -60,7 +60,7 @@
                                 </select>
                                 @if ($errors->has('phone_coun_code')) <p style="color:red;">{{ $errors->first('phone_coun_code') }}</p> @endif
                             </div>
-                        </div> 
+                        </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="name">Phone number<span class="text-danger">*</span></label>
@@ -77,7 +77,7 @@
                                 </select>
                                 @if ($errors->has('whatsapp_coun_code')) <p style="color:red;">{{ $errors->first('whatsapp_coun_code') }}</p> @endif
                             </div>
-                        </div> 
+                        </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="name">Whatsapp Number<span class="text-danger">*</span></label>
@@ -85,7 +85,7 @@
                                 @if ($errors->has('whatsapp_number')) <p style="color:red;">{{ $errors->first('whatsapp_number') }}</p> @endif
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -100,7 +100,7 @@
                                 </select>
                                 @if ($errors->has('service')) <p style="color:red;">{{ $errors->first('service') }}</p> @endif
                             </div>
-                        </div> 
+                        </div>
                     </div>
 
                     <div class="form-group text-right m-b-0">
@@ -116,6 +116,10 @@
     <script>
         jQuery(document).ready(function () {
             $(".select2").select2();
+
+            $(document).on('change','select[name="service"]',function(){
+
+            });
         });
     </script>
 @endpush
