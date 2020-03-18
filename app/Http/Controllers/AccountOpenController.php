@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Traits\CommonTrait;
 use Illuminate\Http\Request;
 use Auth;
+use App\Accountopen;
+use App\Under;
 use Illuminate\Support\Facades\Redirect;
 
 class AccountOpenController extends Controller
@@ -23,7 +25,7 @@ class AccountOpenController extends Controller
                 7 => 'id',
             );
 
-            $totalData = Protector::count();
+            $totalData = Accountopen::count();
 
             $totalFiltered = $totalData;
 
@@ -34,7 +36,7 @@ class AccountOpenController extends Controller
             $dir = $request->input('order.0.dir');
 
             if(empty($request->input('search.value'))) {
-                $protectors = Protector::offset($start)
+                $accountopens = Accountopen::offset($start)
                                     ->limit($limit)
                                     ->orderBy($order,$dir)
                                     ->get()
@@ -43,38 +45,36 @@ class AccountOpenController extends Controller
             } else {
                 $search = $request->input('search.value');
 
-                $protectors =  Protector::where('id','LIKE',"%{$search}%")
-                                    ->orWhere('membership_number', 'LIKE',"%{$search}%")
+                $accountopens =  Accountopen::where('id','LIKE',"%{$search}%")
+                                    ->orWhere('name', 'LIKE',"%{$search}%")
                                     ->offset($start)
                                     ->limit($limit)
                                     ->orderBy($order,$dir)
                                     ->get()
                                     ->toArray();
 
-                $totalFiltered = Protector::where('id','LIKE',"%{$search}%")
-                                    ->orWhere('membership_number', 'LIKE',"%{$search}%")
+                $totalFiltered = Accountopen::where('id','LIKE',"%{$search}%")
+                                    ->orWhere('name', 'LIKE',"%{$search}%")
                                     ->count();
             }
             // dd($protectors);
             $data = array();
-            if(!empty($protectors)){
-                foreach ($protectors as $protector) {
-                    $services = Service::whereIn('id', explode(',', $protector['service_id']))->pluck('name')->toArray();
-                    // dd($services);
-                    $show =  route('protector.show',$protector['id']);
-                    $edit =  route('protector.edit',$protector['id']);
-                    $delete =  route('protector.destroy',$protector['id']);
+            if(!empty($accountopens)){
+                foreach ($accountopens as $accountopen) {
+                    $show =  route('accountopen.show',$accountopen['id']);
+                    $edit =  route('accountopen.edit',$accountopen['id']);
+                    $delete =  route('accountopen.destroy',$accountopen['id']);
 
-                    $nestedData['id'] = $protector['id'];
-                    $nestedData['reference_code'] = $protector['reference_code'];
-                    $nestedData['name'] = $protector['name'];
-                    $nestedData['client_reference'] = strtoupper(implode(',',$services));
-                    $nestedData['under'] = $protector['terminal_id'];
-                    $nestedData['created_at'] = date('d-m-Y H:i:s',strtotime($protector['created_at']));
-                    $nestedData['updated_at'] = date('d-m-Y H:i:s',strtotime($protector['updated_at']));
+                    $nestedData['id'] = $accountopen['id'];
+                    $nestedData['reference_code'] = $accountopen['reference_code'];
+                    $nestedData['name'] = $accountopen['name'];
+                    $nestedData['client_reference'] = $accountopen['client_reference'];
+                    $nestedData['under'] = $accountopen['under'];
+                    $nestedData['created_at'] = date('d-m-Y H:i:s',strtotime($accountopen['created_at']));
+                    $nestedData['updated_at'] = date('d-m-Y H:i:s',strtotime($accountopen['updated_at']));
                     $nestedData['action'] = "&emsp;<a href='{$show}' title='SHOW' ><span class='glyphicon glyphicon-list'></span></a>
                                             &emsp;<a href='{$edit}' title='EDIT' ><span class='glyphicon glyphicon-edit'></span></a>
-                                            &emsp;<a href='javascript:void(0);' class='delete-btn' data-id='".$protector['id']."'><span class='glyphicon glyphicon-trash'></span>
+                                            &emsp;<a href='javascript:void(0);' class='delete-btn' data-id='".$accountopen['id']."'><span class='glyphicon glyphicon-trash'></span>
                                             <form action='".$delete."' method='POST'>
                                                 <input type='hidden' name='_method' value='DELETE'>
                                                 <input type='hidden' name='_token' value='".csrf_token()."'>
@@ -92,12 +92,13 @@ class AccountOpenController extends Controller
 
             echo json_encode($json_data); die();
         }
-        return view('front-side.protector.index');
+        return view('front-side.accountopen.index');
     }
 
     public function create()
     {
-        //
+        $unders = Under::all()->toArray();
+        return view('front-side.accountopen.create',compact(['unders']));
     }
 
     public function store(Request $request)

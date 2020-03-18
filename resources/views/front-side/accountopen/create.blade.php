@@ -46,13 +46,13 @@
                                 <label for="under">Under<span class="text-danger">*</span></label>
                                 <select name="under" class="form-control select2">
                                     <option value="">Select Under</option>
-                                     @if (!(empty($clients)))
-                                        @foreach($clients as $client)
-                                              <option value="{{ $client['id'] }}"  @if(old('client') == $client['id']) selected @endif>{{ strtoupper($client['f_name'].' '.$client['m_name'].' '.$client['l_name']) }}</option>
+                                     @if (!(empty($unders)))
+                                        @foreach($unders as $under)
+                                              <option value="{{ $under['id'] }}"  @if(old('under') == $under['id']) selected @endif>{{ strtoupper($under['name']) }}</option>
                                         @endforeach;
                                     @endif;
                                 </select>
-                                @if ($errors->has('client')) <p style="color:red;">{{ $errors->first('client') }}</p> @endif
+                                @if ($errors->has('under')) <p style="color:red;">{{ $errors->first('under') }}</p> @endif
                             </div>
                         </div>
                     </div>
