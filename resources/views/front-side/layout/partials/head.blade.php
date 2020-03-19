@@ -21,6 +21,8 @@
 <link rel="stylesheet" href="{{asset('public/plugins/switchery/switchery.min.css')}}">
 <link rel="stylesheet" href="{{asset('public/plugins/datatables/buttons.bootstrap.min.css')}}">
 <link rel="stylesheet" href="{{asset('public/plugins/datatables/fixedHeader.bootstrap.min.css')}}">
+<link rel="stylesheet" href="{{asset('public/plugins/timepicker/bootstrap-timepicker.min.css')}}">
+<link rel="stylesheet" href="{{asset('public/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}">
 
 <script src="{{asset('public/front-side/js/jquery.min.js')}}"></script>
 @stack('style')

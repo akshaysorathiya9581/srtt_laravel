@@ -69,8 +69,12 @@
 
 @push('scripts')
     <script>
-        jQuery(document).ready(function () {
+        jQuery(document).ready(function() {
             $(".select2").select2();
+
+            $(document).on('change','select[name="under"]',function(){
+
+            });
         });
     </script>
 @endpush

@@ -123,3 +123,32 @@ $(document).ready(function(){
         }
     });
 });
+
+date();
+function date() {
+    $('.date').datepicker({
+        autoclose: true,
+        todayHighlight: true
+    });
+}
+
+function ajaxImageRequest(url,data='') {
+    return $.ajax({
+            url: url,
+            type: 'POST',
+            cache:false,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            data: data
+        });
+}
+// ajax request sample
+function ajaxRequest(url,data='') {
+    return $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            data: data
+        });
+}
